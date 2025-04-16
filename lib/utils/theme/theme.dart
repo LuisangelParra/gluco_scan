@@ -10,8 +10,8 @@ import 'custom_themes/elevated_button_theme.dart';
 import 'custom_themes/outlined_button_theme.dart';
 import 'custom_themes/text_field_theme.dart';
 
-class TAppTheme {
-  TAppTheme._();
+class LAppTheme {
+  LAppTheme._();
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,

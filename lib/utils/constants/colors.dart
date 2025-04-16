@@ -43,7 +43,7 @@ class LColors {
 
   // Background Container Colors
   static const Color lightContainer = offWhite;             // Contenedor claro
-  static Color darkContainer = Colors.white.withOpacity(0.1); // Contenedor oscuro (transparencia)
+  static Color darkContainer = Colors.white.withValues(alpha: 0.1); // Contenedor oscuro (transparencia)
 
   // Button Colors
   static const Color buttonPrimary = primary;               // Botón primario
