@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gluco_scan/bindings/general_bindings.dart';
+import 'package:gluco_scan/features/authentication/screens/onboarding/onboarding.dart';
+import 'package:gluco_scan/routes/app_routes.dart';
 
 import 'package:gluco_scan/utils/theme/theme.dart';
 
@@ -17,17 +19,18 @@ class App extends StatelessWidget {
       theme: LAppTheme.lightTheme,
       darkTheme: LAppTheme.darkTheme,
       initialBinding: GeneralBindings(),
-      
+      getPages: AppRoutes.pages,
 
-      /// Show Loader or Circular Progress Indicator meanwhile Authentication Repository is deciding to show relevant screen.
-      home: const Scaffold(
-        backgroundColor: LColors.primary,
-        body: Center(
-          child: CircularProgressIndicator(
-            color: Colors.white,
-          ),
-        ),
-      ),
+      home: OnBoardingScreen(),
+
+      ///home: const Scaffold(
+      ///  backgroundColor: LColors.primary,
+      ///  body: Center(
+      ///    child: CircularProgressIndicator(
+      ///      color: Colors.white,
+      ///    ),
+      ///  ),
+      ///),
     );
   }
 }
