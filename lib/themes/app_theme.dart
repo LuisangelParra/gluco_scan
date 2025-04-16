@@ -3,16 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 abstract final class AppTheme {
-  // Ejemplo de tema claro definido manualmente para una versión anterior
+  // Tema claro basado en los diseños de GlucoScan y la paleta de colores.
   static ThemeData light = FlexThemeData.light(
     colors: const FlexSchemeColor(
-      primary: Color(0xFF686DB1),
-      primaryContainer: Color(0xFFD2D3F2),
-      secondary: Color(0xFF686DB1),
-      secondaryContainer: Color(0xFFD2D3F2),
-      tertiary: Color(0xFF686DB1),
-      tertiaryContainer: Color(0xFFD2D3F2),
-      appBarColor: Color(0xFFD2D3F2),
+      primary: Color(0xFF686DB1),         // Color de marca.
+      primaryContainer: Color(0xFFCFBFE9),  // Variante clara derivada.
+      secondary: Color(0xFF167B6B),         // Tono teal.
+      secondaryContainer: Color(0xFFDDF2EF),// Contenedor muy claro para secundarios.
+      tertiary: Color(0xFFB46242),          // Acento cálido (naranja quemado).
+      tertiaryContainer: Color(0xFFFFD0BE), // Variante clara del acento.
+      appBarColor: Color(0xFFF9F9FC),       // Fondo muy claro para la AppBar.
       swapOnMaterial3: true,
     ),
     subThemesData: const FlexSubThemesData(
@@ -28,19 +28,18 @@ abstract final class AppTheme {
     cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
   );
 
-  // Ejemplo de tema oscuro definido manualmente para una versión anterior
+  // Tema oscuro basado en los diseños de GlucoScan y la paleta de colores.
   static ThemeData dark = FlexThemeData.dark(
     colors: const FlexSchemeColor(
-      primary: Color(0xFF686DB1),
-      primaryContainer: Color(0xFFD2D3F2),
-      primaryLightRef: Color(0xFF686DB1),
-      secondary: Color(0xFF686DB1),
-      secondaryContainer: Color(0xFFD2D3F2),
-      secondaryLightRef: Color(0xFF686DB1),
-      tertiary: Color(0xFF686DB1),
-      tertiaryContainer: Color(0xFFD2D3F2),
-      tertiaryLightRef: Color(0xFF686DB1),
-      appBarColor: Color(0xFF444A80),
+      primary: Color(0xFF686DB1),         // Se mantiene el color de marca.
+      primaryContainer: Color(0xFF232651),  // Variante oscura para fondos.
+      primaryLightRef: Color(0xFF686DB1),   // Referencia a la versión clara.
+      secondary: Color(0xFF167B6B),         // Tono teal.
+      secondaryContainer: Color(0xFF4264AE),// Contenedor oscuro para elementos secundarios.
+      secondaryLightRef: Color(0xFF167B6B), // Referencia a la versión clara.
+      tertiary: Color(0xFFCA4B3A),          // Acento adaptado al modo oscuro.
+      tertiaryContainer: Color(0xFFFFD0BE), // Se mantiene coherencia en la variante.
+      appBarColor: Color(0xFF444A80),       // Fondo oscuro para la AppBar.
       swapOnMaterial3: true,
     ),
     subThemesData: const FlexSubThemesData(

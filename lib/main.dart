@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gluco_scan/home_page.dart';
 import 'package:gluco_scan/themes/app_theme.dart';
 
-void main() {
+Future<void> main() async {
+  // Widgets Binding
+  //final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  
+  // -- GetX Local Storage
+  await GetStorage.init();
+
   runApp(const MyApp());
 }
 
