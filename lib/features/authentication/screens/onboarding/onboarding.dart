@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gluco_scan/common/widgets/buttons/primary_button.dart';
+import 'package:gluco_scan/routes/routes.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
-import 'package:gluco_scan/utils/constants/image_strings.dart'; // Ajusta el import a tu estructura de proyecto
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -8,7 +10,6 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Fondo blanco
       backgroundColor: LColors.white,
       body: Center(
         child: Padding(
@@ -18,47 +19,27 @@ class OnBoardingScreen extends StatelessWidget {
             children: [
               // Logo
               Image.asset(
-                LImages.onBoardingLogo,
+                'assets/logos/logo-onboarding.png',
                 width: 200,
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 48),
 
-              // Botón "Regístrate"
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // TODO: Navegar a la pantalla de registro
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: LColors.lavenderLight,
-                    foregroundColor: LColors.textWhite,
-                    elevation: 0,
-                    shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text('Regístrate'),
-                ),
+              // Botón “Regístrate”
+              PrimaryButton(
+                label: 'Regístrate',
+                backgroundColor: LColors.lavenderLight,
+                foregroundColor: LColors.textWhite,
+                onPressed: () => Get.toNamed(LRoutes.signUp),
               ),
               const SizedBox(height: 16),
 
-              // Botón "Iniciar Sesión"
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // TODO: Navegar a la pantalla de inicio de sesión
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: LColors.mint,
-                    foregroundColor: LColors.secondary,
-                    elevation: 0,
-                    shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text('Iniciar Sesión'),
-                ),
+              // Botón “Iniciar Sesión”
+              PrimaryButton(
+                label: 'Iniciar Sesión',
+                backgroundColor: LColors.mint,
+                foregroundColor: LColors.secondary,
+                onPressed: () => Get.toNamed(LRoutes.login),
               ),
             ],
           ),

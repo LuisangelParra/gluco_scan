@@ -6,8 +6,6 @@ import 'package:gluco_scan/routes/app_routes.dart';
 
 import 'package:gluco_scan/utils/theme/theme.dart';
 
-import 'utils/constants/colors.dart';
-
 /// -- Use this class to setup themes, inital Bindings, any animations and much more
 class App extends StatelessWidget {
   const App({super.key});

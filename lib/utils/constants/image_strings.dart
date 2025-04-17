@@ -1,4 +1,4 @@
 class LImages {
   static const String onBoardingLogo =
-      'assets/logos/logo2.png';
+      'assets/logos/logo-onboarding.png';
 }
