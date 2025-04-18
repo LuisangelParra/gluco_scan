@@ -4,6 +4,7 @@ import 'package:gluco_scan/features/authentication/screens/onboarding/onboarding
 import 'package:gluco_scan/features/authentication/screens/login/login.dart';
 import 'package:gluco_scan/features/authentication/screens/signup/signup.dart';
 import 'package:gluco_scan/features/habit_tracking/screens/habit_tracking_screen.dart';
+import 'package:gluco_scan/features/learning/screens/learning_screen.dart';
 import 'package:gluco_scan/features/risk_evaluation/screens/action_plan_screen.dart';
 import 'package:gluco_scan/features/risk_evaluation/screens/risk_evaluation_screen.dart';
 import 'package:gluco_scan/features/risk_evaluation/screens/risk_result_screen.dart';
@@ -17,6 +18,7 @@ class AppRoutes {
   static const riskResult = '/risk-result';
   static const actionPlan = '/action-plan';
   static const habitTracking = '/habit-tracking';
+  static const learning = '/learning';
 
   static final pages = <GetPage>[
     GetPage(name: welcome,  page: () => const OnBoardingScreen()),
@@ -27,5 +29,6 @@ class AppRoutes {
     GetPage(name: riskResult, page: () => const RiskResultScreen()),
     GetPage(name: actionPlan, page: () => const ActionPlanScreen()),
     GetPage(name: habitTracking, page: () => const HabitTrackingScreen()),
+    GetPage(name: learning, page: () => const LearningScreen()),
   ];
 }
