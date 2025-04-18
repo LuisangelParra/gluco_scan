@@ -226,7 +226,7 @@ class DashboardScreen extends StatelessWidget {
                   iconColor: LColors.darkBlue,
                   title: 'Registrar mis\nhábitos',
                   titleColor: LColors.darkBlue,
-                  onTap: () {},
+                  onTap: () => Get.toNamed(AppRoutes.habitTracking),
                 ),
                 _DashboardCard(
                   backgroundColor: LColors.lavenderLight,
@@ -234,7 +234,7 @@ class DashboardScreen extends StatelessWidget {
                   iconColor: LColors.darkBlue,
                   title: 'Aprender sobre\nla diabetes',
                   titleColor: LColors.darkBlue,
-                  onTap: () {},
+                  onTap: () => Get.toNamed(AppRoutes.learning),
                 ),
                 _DashboardCard(
                   backgroundColor: LColors.cream,
