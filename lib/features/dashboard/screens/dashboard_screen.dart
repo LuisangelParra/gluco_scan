@@ -210,7 +210,7 @@ class DashboardScreen extends StatelessWidget {
                   iconColor: Colors.white,
                   title: 'Nivel de\nriesgo',
                   titleColor: Colors.white,
-                  onTap: () {},
+                  onTap: () => Get.toNamed(AppRoutes.riskResult),
                 ),
                 _DashboardCard(
                   backgroundColor: LColors.accent,
