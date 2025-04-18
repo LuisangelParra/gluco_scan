@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gluco_scan/routes/app_routes.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
 // import 'dart:ui';
 
@@ -213,7 +214,7 @@ class RiskResultScreen extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: () => Get.toNamed('/action-plan'),
+                  onPressed: () => Get.toNamed(AppRoutes.actionPlan),
                   icon: const Icon(Icons.visibility),
                   label: const Text('Ver plan de acción'),
                   style: ElevatedButton.styleFrom(

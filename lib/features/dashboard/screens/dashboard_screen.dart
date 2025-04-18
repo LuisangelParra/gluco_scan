@@ -218,7 +218,7 @@ class DashboardScreen extends StatelessWidget {
                   iconColor: Colors.white,
                   title: 'Plan de\nacción',
                   titleColor: Colors.white,
-                  onTap: () {},
+                  onTap: () => Get.toNamed(AppRoutes.actionPlan),
                 ),
                 _DashboardCard(
                   backgroundColor: LColors.blush,

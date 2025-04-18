@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gluco_scan/bindings/general_bindings.dart';
-import 'package:gluco_scan/features/authentication/screens/onboarding/onboarding.dart';
-import 'package:gluco_scan/features/dashboard/screens/dashboard_screen.dart';
 import 'package:gluco_scan/routes/app_routes.dart';
 
 import 'package:gluco_scan/utils/theme/theme.dart';
