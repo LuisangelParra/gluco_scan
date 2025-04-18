@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gluco_scan/routes/app_routes.dart';
 // Removed unused imports
 
 /// Pantalla de Seguimiento de hábitos completamente funcional
@@ -271,7 +273,6 @@ class _HabitTrackingScreenState extends State<HabitTrackingScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          onPressed: _navigateToLearning,
           label: const Text(
             '¡Aprende!',
             style: TextStyle(
@@ -279,7 +280,7 @@ class _HabitTrackingScreenState extends State<HabitTrackingScreen> {
               fontWeight: FontWeight.bold,
               fontSize: 15, // Tamaño de letra aumentado
             ),
-          ),
+          ), onPressed: () => Get.toNamed(AppRoutes.learning),
         ),
       ),
     );
