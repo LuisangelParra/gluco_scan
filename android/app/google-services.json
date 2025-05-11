@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "398709230612",
+    "project_id": "glucoscanapp",
+    "storage_bucket": "glucoscanapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398709230612:android:e5aa1cba2af43fc619ab01",
+        "android_client_info": {
+          "package_name": "com.example.gluco_scan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398709230612-vin0urgtnhrmvlj8hda81nkd7lnejkrc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gluco_scan",
+            "certificate_hash": "086df7efb1fa663d3f2c432e2b5e4b356103d19a"
+          }
+        },
+        {
+          "client_id": "398709230612-h5c0tp9vrfmq3cttm3aqsq073a0eu5jh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8iIMQXWMv3W5ZqRptlHKnR97p_q4mXeo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398709230612-h5c0tp9vrfmq3cttm3aqsq073a0eu5jh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "398709230612-0upg074fdmfllbqjlftcoh37ur5a43j8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.glucoScan"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

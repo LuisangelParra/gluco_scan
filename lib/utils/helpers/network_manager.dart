@@ -14,16 +14,16 @@ class NetworkManager extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Forzamos el tipo de stream a ConnectivityResult
-    _connectivitySubscription = _connectivity
-        .onConnectivityChanged
-        .cast<ConnectivityResult>()
-        .listen(_updateConnectionStatus);
+    // Mapeamos la lista que emite el stream y tomamos always el primer elemento
+    _connectivitySubscription = _connectivity.onConnectivityChanged
+      .map((list) => list.first)         // List<ConnectivityResult> → ConnectivityResult
+      .distinct()                        // opcional: solo cambios reales
+      .listen(_updateConnectionStatus);
   }
 
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    _connectionStatus.value = result;
-    if (result == ConnectivityResult.none) {
+  Future<void> _updateConnectionStatus(ConnectivityResult status) async {
+    _connectionStatus.value = status;
+    if (status == ConnectivityResult.none) {
       LLoaders.customToast(message: 'No Internet Connection');
     }
   }
