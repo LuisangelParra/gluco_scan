@@ -9,15 +9,20 @@ class RiskResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Recibe el nivel de riesgo: 0 = Bajo, 1 = Moderado, 2 = Alto
-    final int riskLevel = Get.arguments as int? ?? 0;
+    final resultado = Get.arguments as Map<String, dynamic>? ?? {};
+    final double probabilidad = resultado['probabilidad'] ?? 0.0;
+    final String clasificacion = resultado['riesgo_diabetes'] ?? 'Desconocido';
+    final double bmi = (resultado['imc'] as num?)?.toDouble() ?? 0.0;
+    final int nivelRiesgo = probabilidad < 0.33
+        ? 0
+        : (probabilidad < 0.66 ? 1 : 2);
 
     const labels = ['Bajo', 'Moderado', 'Alto'];
     // Colores pastel para el gauge (izquierda→derecha: Alto, Moderado, Bajo)
     final gaugeColors = [
-      LColors.primary.withAlpha((0.7 * 255).round()), // Alto/púrpura
-      LColors.cream.withAlpha((0.5 * 255).round()),   // Moderado/amarillo
-      LColors.accent.withAlpha((0.5 * 255).round()),  // Bajo/durazno
+      LColors.primary.withAlpha(nivelRiesgo == 2 ? 255 : 100), // Alto
+      LColors.cream.withAlpha(nivelRiesgo == 1 ? 255 : 100),   // Moderado
+      LColors.accent.withAlpha(nivelRiesgo == 0 ? 255 : 100),  // Bajo
     ];
     final descriptions = [
       '¡Bien hecho! Tu riesgo es bajo, sigue manteniendo hábitos saludables.',
@@ -68,38 +73,62 @@ class RiskResultScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Gauge simulado con tres arcos
+            Text(
+              'Diagnóstico: $clasificacion',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text('Probabilidad estimada: ${(probabilidad * 100).toStringAsFixed(2)}%'),
+            const SizedBox(height: 8),
+            Text('IMC calculado: ${bmi.toStringAsFixed(1)}'),
+            const SizedBox(height: 8),
+            Text(
+              'Categoría IMC: ${resultado['categoria_imc'] ?? ''}',
+              style: const TextStyle(fontSize: 14, color: Colors.black54),
+            ),
+            const SizedBox(height: 24),
+
+            // Gauge estilo original (tres arcos) con aguja dinámica
             SizedBox(
               height: 120,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(3, (i) {
-                      return Container(
-                        width: (MediaQuery.of(context).size.width - 32) / 3,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: gaugeColors[i],
-                          borderRadius: BorderRadius.only(
-                            topLeft: i == 0 ? const Radius.circular(40) : Radius.zero,
-                            topRight: i == 2 ? const Radius.circular(40) : Radius.zero,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final totalWidth = constraints.maxWidth;
+                  final clamped = probabilidad.clamp(0.0, 1.0);
+                  final pointerLeft = clamped * totalWidth;
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(3, (i) {
+                          return Container(
+                            width: (totalWidth - 32) / 3,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: gaugeColors[i],
+                              borderRadius: BorderRadius.only(
+                                topLeft: i == 0 ? const Radius.circular(40) : Radius.zero,
+                                topRight: i == 2 ? const Radius.circular(40) : Radius.zero,
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                      Positioned(
+                        left: pointerLeft - 4,
+                        child: Container(
+                          width: 8,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.black87,
+                            borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                      );
-                    }),
-                  ),
-                  // Aguja centrales
-                  Container(
-                    width: 8,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.black87,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ],
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             const SizedBox(height: 24),
@@ -127,7 +156,7 @@ class RiskResultScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: i == 1
+                    child: i == nivelRiesgo
                         // Moderado: description in gray rounded box
                         ? Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -186,7 +215,7 @@ class RiskResultScreen extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: j == 2 ? Colors.white : recommendationTextColor[j],
+                        color: j == nivelRiesgo ? Colors.white : recommendationTextColor[j],
                       ),
                     ),
                   ),
@@ -195,7 +224,7 @@ class RiskResultScreen extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       decoration: BoxDecoration(
-                        color: j == riskLevel ? LColors.lavenderLight : Colors.transparent,
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -214,7 +243,7 @@ class RiskResultScreen extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: () => Get.toNamed(AppRoutes.actionPlan),
+                  onPressed: () => Get.toNamed(AppRoutes.actionPlan, arguments: resultado),
                   icon: const Icon(Icons.visibility),
                   label: const Text('Ver plan de acción'),
                   style: ElevatedButton.styleFrom(

@@ -8,10 +8,90 @@ class ActionPlanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Obtener argumentos y extraer clasificacion
+    final resultado = Get.arguments as Map<String, dynamic>? ?? {};
+    final String clasificacion = resultado['clasificacion'] ?? 'Desconocido';
+
+    Color backgroundColor;
+    String introText;
+
+    switch (clasificacion) {
+      case 'Bajo':
+        backgroundColor = const Color(0xFFFFD0BE);
+        introText = '¡Buen trabajo! Tu riesgo es bajo. Sigue con tus hábitos saludables.';
+        break;
+      case 'Moderado':
+        backgroundColor = const Color(0xFFFFEDC3);
+        introText = 'Tu riesgo es moderado. Estos cambios pueden ayudarte a prevenir complicaciones.';
+        break;
+      case 'Alto':
+        backgroundColor = const Color(0xFF676DB1);
+        introText = 'Riesgo alto detectado. Es fundamental seguir las recomendaciones con disciplina.';
+        break;
+      default:
+        backgroundColor = LColors.primary;
+        introText = 'Consulta estas recomendaciones generales para mejorar tu salud.';
+    }
+
+    // Construir la lista de secciones según la clasificación
+    final List<Widget> categorySections = [];
+    categorySections.add(
+      _CategorySection(
+        title: 'Alimentación',
+        icon: Icons.local_dining,
+        items: const [
+          'Mantén una dieta balanceada con frutas, verduras y proteínas saludables.',
+          'Reduce el consumo de azúcar y alimentos ultraprocesados.',
+          'Consulta a un nutricionista para una dieta personalizada.',
+        ],
+      ),
+    );
+    categorySections.add(const SizedBox(height: 24));
+    categorySections.add(
+      _CategorySection(
+        title: 'Ejercicio',
+        icon: Icons.fitness_center,
+        items: const [
+          'Sigue con tu rutina de actividad física de al menos 30 min al día.',
+          'Aumenta tu actividad a mínimo 5 días a la semana.',
+          'Consulta con un especialista antes de iniciar una rutina de ejercicio.',
+        ],
+      ),
+    );
+    if (clasificacion == 'Moderado' || clasificacion == 'Alto') {
+      categorySections.add(const SizedBox(height: 24));
+      categorySections.add(
+        _CategorySection(
+          title: 'Manejo del estrés',
+          icon: Icons.self_improvement,
+          items: const [
+            'Practica técnicas de relajación como meditación o respiración profunda.',
+            'Reduce la exposición al estrés con pausas activas y momentos de descanso.',
+            'Considera apoyo profesional si el estrés está afectando tu bienestar.',
+          ],
+        ),
+      );
+    }
+    if (clasificacion == 'Alto') {
+      categorySections.add(const SizedBox(height: 24));
+      categorySections.add(
+        _CategorySection(
+          title: 'Hábitos de sueño',
+          icon: Icons.hotel,
+          items: const [
+            'Mantén un horario de sueño regular de 7-8 horas.',
+            'Evita pantallas antes de dormir y mejora tu higiene del sueño.',
+            'Consulta a un especialista si tienes problemas de sueño constantes.',
+          ],
+        ),
+      );
+    }
+    categorySections.add(const SizedBox(height: 32));
+
     return Scaffold(
       backgroundColor: LColors.white,
       appBar: AppBar(
-        backgroundColor: LColors.primary,
+        backgroundColor: backgroundColor,
         elevation: 0,
         title: const Text(
           'Recomendaciones para ti',
@@ -27,10 +107,25 @@ class ActionPlanScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Hemos preparado estrategias personalizadas según tu nivel de riesgo. Pequeños cambios pueden marcar la diferencia.',
-              style: TextStyle(fontSize: 14, color: Colors.black87),
+            Text(
+              introText,
+              style: const TextStyle(fontSize: 14, color: Colors.black87),
             ),
+            if (clasificacion == 'Alto') ...[
+              const SizedBox(height: 16),
+              Row(
+                children: const [
+                  Icon(Icons.warning_amber_rounded, color: Colors.red, size: 32),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Este nivel de riesgo requiere atención prioritaria. Considera consultar a un profesional de salud.',
+                      style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 24),
             // Leyenda de colores
             Row(
@@ -42,49 +137,8 @@ class ActionPlanScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-
-            // Secciones de categoría
-            _CategorySection(
-              title: 'Alimentación',
-              icon: Icons.local_dining,
-              items: const [
-                'Mantén una dieta balanceada con frutas, verduras y proteínas saludables.',
-                'Reduce el consumo de azúcar y alimentos ultraprocesados.',
-                'Consulta a un nutricionista para una dieta personalizada.',
-              ],
-            ),
-            const SizedBox(height: 24),
-            _CategorySection(
-              title: 'Ejercicio',
-              icon: Icons.fitness_center,
-              items: const [
-                'Sigue con tu rutina de actividad física de al menos 30 min al día.',
-                'Aumenta tu actividad a mínimo 5 días a la semana.',
-                'Consulta con un especialista antes de iniciar una rutina de ejercicio.',
-              ],
-            ),
-            const SizedBox(height: 24),
-            _CategorySection(
-              title: 'Manejo del estrés',
-              icon: Icons.self_improvement,
-              items: const [
-                'Practica técnicas de relajación como meditación o respiración profunda.',
-                'Reduce la exposición al estrés con pausas activas y momentos de descanso.',
-                'Considera apoyo profesional si el estrés está afectando tu bienestar.',
-              ],
-            ),
-            const SizedBox(height: 24),
-            _CategorySection(
-              title: 'Hábitos de sueño',
-              icon: Icons.hotel,
-              items: const [
-                'Mantén un horario de sueño regular de 7-8 horas.',
-                'Evita pantallas antes de dormir y mejora tu higiene del sueño.',
-                'Consulta a un especialista si tienes problemas de sueño constantes.',
-              ],
-            ),
-            const SizedBox(height: 32),
-
+            // Secciones de categoría según clasificación
+            ...categorySections,
             // Botones de acción
             Row(
               children: [

@@ -4,11 +4,80 @@ import 'package:gluco_scan/routes/app_routes.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
 
 // Pantalla principal del Dashboard
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  double? _glucose;
+  double? _insulin;
+  double? _heartRate;
+
+  Future<void> _showAddDataDialog() async {
+    final gController = TextEditingController(text: _glucose?.toString());
+    final iController = TextEditingController(text: _insulin?.toString());
+    final hController = TextEditingController(text: _heartRate?.toString());
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('Añade tus datos'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildDataField('Glucosa (mmol/L)', gController),
+              const SizedBox(height: 12),
+              _buildDataField('Insulina (mg/dL)', iController),
+              const SizedBox(height: 12),
+              _buildDataField('Ritmo cardíaco (bpm)', hController),
+            ],
+          ),
+        ),
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _glucose = double.tryParse(gController.text);
+                _insulin = double.tryParse(iController.text);
+                _heartRate = double.tryParse(hController.text);
+              });
+              Navigator.pop(context);
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDataField(String label, TextEditingController controller) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        isDense: true,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Valores de salud (sólo para demostración, se actualizarán desde datos reales)
+    final double glucoseVal = _glucose ?? 0.0;
+    final double insulinVal = _insulin ?? 0.0;
+    final double hrVal = _heartRate ?? 0.0;
+
+    // Normalizar y calcular progreso promedio
+    final double progress = ((glucoseVal / 10) + (insulinVal / 200) + (hrVal / 120)) / 3;
+
     return Scaffold(
       // ════════════════════════════════════════════════════════════
       // 1) HEADER MORADO con bordes inferiores redondeados
@@ -95,16 +164,16 @@ class DashboardScreen extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6),
                   child: LinearProgressIndicator(
-                    value: 0.64,
+                    value: progress.clamp(0.0, 1.0),
                     minHeight: 12,
                     backgroundColor: LColors.lavenderLight,
                     valueColor: const AlwaysStoppedAnimation(LColors.primary),
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Tu progreso es de 64%',
-                  style: TextStyle(
+                Text(
+                  'Tu progreso es de ${(progress * 100).toStringAsFixed(0)}%',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -122,61 +191,65 @@ class DashboardScreen extends StatelessWidget {
             // ════════════════════════════════════════════════════════════
             _SectionTitle('Ingresos diarios'),
             const SizedBox(height: 12),
-            GridView.count(
-              crossAxisCount: 4,
-              childAspectRatio: 0.6,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+            // 4) Ingresos diarios - nueva distribución
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 1️⃣ Añade tus datos (oscuro → texto blanco)
-                _DashboardCard(
-                  backgroundColor: LColors.primary,
-                  icon: Icons.add,
-                  iconColor: Colors.white,
-                  title: 'Añade tus datos',
-                  titleColor: Colors.white,
-                  onTap: () {},
+                // Tarjeta grande para añadir datos
+                SizedBox(
+                  width: double.infinity,
+                  child: _DashboardCard(
+                    backgroundColor: LColors.primary,
+                    icon: Icons.add,
+                    iconColor: Colors.white,
+                    title: 'Añade tus datos',
+                    titleColor: Colors.white,
+                    onTap: _showAddDataDialog,
+                  ),
                 ),
-
-                // 2️⃣ Glucosa en sangre (pastel claro → texto oscuro)
-                _DashboardCard(
-                  // ignore: deprecated_member_use
-                  backgroundColor: LColors.accent.withOpacity(0.3),
-                  icon: Icons.bloodtype,
-                  iconColor: LColors.darkBlue,
-                  title: 'Glucosa en\nsangre',
-                  titleColor: LColors.darkBlue,
-                  subtitle: '5.1 mmol/L',
-                  // ignore: deprecated_member_use
-                  subtitleColor: LColors.darkBlue.withOpacity(0.7),
-                  onTap: () {},
-                ),
-
-                // 3️⃣ Insulina (rosa claro → texto oscuro)
-                _DashboardCard(
-                  backgroundColor: LColors.blush,
-                  icon: Icons.opacity,
-                  iconColor: LColors.darkBlue,
-                  title: 'Insulina',
-                  titleColor: LColors.darkBlue,
-                  subtitle: '100 mg/dl',
-                  // ignore: deprecated_member_use
-                  subtitleColor: LColors.darkBlue.withOpacity(0.7),
-                  onTap: () {},
-                ),
-
-                // 4️⃣ Ritmo cardíaco (menta oscuro → texto blanco)
-                _DashboardCard(
-                  backgroundColor: LColors.mint,
-                  icon: Icons.favorite,
-                  iconColor: Colors.white,
-                  title: 'Ritmo\ncardíaco',
-                  titleColor: Colors.white,
-                  subtitle: '78 bpm',
-                  subtitleColor: Colors.white70,
-                  onTap: () {},
+                const SizedBox(height: 12),
+                // Tres tarjetas métricas en una fila
+                Row(
+                  children: [
+                    Expanded(
+                      child: _DashboardCard(
+                        backgroundColor: LColors.accent.withOpacity(0.3),
+                        icon: Icons.bloodtype,
+                        iconColor: LColors.darkBlue,
+                        title: 'Glucosa',
+                        titleColor: LColors.darkBlue,
+                        subtitle: _glucose != null ? '${_glucose!.toStringAsFixed(1)} mmol/L' : '--.-- mmol/L',
+                        subtitleColor: LColors.darkBlue.withOpacity(0.7),
+                        onTap: _showAddDataDialog,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _DashboardCard(
+                        backgroundColor: LColors.blush,
+                        icon: Icons.opacity,
+                        iconColor: LColors.darkBlue,
+                        title: 'Insulina',
+                        titleColor: LColors.darkBlue,
+                        subtitle: _insulin != null ? '${_insulin!.toStringAsFixed(0)} mg/dL' : '--.-- mg/dL',
+                        subtitleColor: LColors.darkBlue.withOpacity(0.7),
+                        onTap: _showAddDataDialog,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _DashboardCard(
+                        backgroundColor: LColors.mint,
+                        icon: Icons.favorite,
+                        iconColor: Colors.white,
+                        title: 'Ritmo cardíaco',
+                        titleColor: Colors.white,
+                        subtitle: _heartRate != null ? '${_heartRate!.toStringAsFixed(0)} bpm' : '--.-- bpm',
+                        subtitleColor: Colors.white70,
+                        onTap: _showAddDataDialog,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -296,6 +369,7 @@ class _DashboardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      elevation: 4,
       color: backgroundColor,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
@@ -307,7 +381,7 @@ class _DashboardCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 24, color: iconColor),
+              Icon(icon, size: 32, color: iconColor),
               const SizedBox(height: 4),
               Text(
                 title,
