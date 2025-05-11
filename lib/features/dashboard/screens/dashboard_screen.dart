@@ -263,7 +263,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 12),
             GridView.count(
               crossAxisCount: 3,
-              childAspectRatio: 1,
+              childAspectRatio: 0.9,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
               shrinkWrap: true,
@@ -376,17 +376,19 @@ class _DashboardCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 32, color: iconColor),
               const SizedBox(height: 4),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: titleColor, fontWeight: FontWeight.bold),
+              Flexible(
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: titleColor, fontWeight: FontWeight.bold, fontSize: 14),
+                ),
               ),
               if (subtitle != null) ...[
                 const SizedBox(height: 4),
