@@ -1,61 +1,75 @@
-// lib/widgets/terms_and_signin.dart
+// lib/common/widgets/forms/terms_and_signin.dart
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gluco_scan/features/authentication/controllers/signup/signup_controller.dart';
 
-/// Checkbox + texto de “Acepto términos y condiciones”
-/// y link “¿Ya tienes una cuenta? Inicia Sesión”
+import 'package:gluco_scan/routes/routes.dart';
+import 'package:gluco_scan/utils/constants/colors.dart';
+import 'package:gluco_scan/utils/constants/sizes.dart';
+import 'package:gluco_scan/utils/helpers/helper_functions.dart';
+
+
+/// Checkbox de Términos y Condiciones + link a Login
 class TermsAndSignIn extends StatelessWidget {
-  final bool accepted;
-  final ValueChanged<bool?> onChanged;
-  final VoidCallback onLoginTap;
-
-  const TermsAndSignIn({
-    super.key,
-    required this.accepted,
-    required this.onChanged,
-    required this.onLoginTap,
-  });
+  const TermsAndSignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final textColor = Theme.of(context).textTheme.bodyMedium?.color;
+    final controller = Get.put(SignupController());
+    final isDark = THelperFunctions.isDarkMode(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Checkbox(
-              value: accepted,
-              onChanged: onChanged,
-            ),
-            const SizedBox(width: 8),
-            const Expanded(
-              child: Text('Acepto términos y condiciones'),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Center(
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(color: textColor),
-              children: [
-                const TextSpan(text: '¿Ya tienes una cuenta? '),
-                TextSpan(
-                  text: 'Inicia Sesión',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                  ),
-                  recognizer: TapGestureRecognizer()..onTap = onLoginTap,
+    return Obx(() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: 24,
+                height: 24,
+                child: Checkbox(
+                  value: controller.privacyPolicy.value,
+                  onChanged: (_) =>
+                      controller.privacyPolicy.toggle(),
                 ),
-              ],
+              ),
+              const SizedBox(width: LSizes.spaceBtwItems),
+              Expanded(
+                child: Text(
+                  "Acepto los Términos y condiciones de uso y la política de privacidad",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: LSizes.spaceBtwItems),
+          Center(
+            child: RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodySmall!
+                    .copyWith(color: isDark ? LColors.white : LColors.black),
+                children: [
+                  const TextSpan(text: '¿Ya tienes cuenta? '),
+                  TextSpan(
+                    text: 'Inicia Sesión',
+                    style: TextStyle(
+                      color: isDark ? LColors.white : LColors.primary,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      decorationColor:
+                          isDark ? LColors.white : LColors.primary,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => Get.toNamed(LRoutes.login),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }

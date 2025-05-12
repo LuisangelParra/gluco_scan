@@ -51,6 +51,7 @@ flutter:
   #----------------- LOCAL ASSETS -----------------#
   assets:
     - assets/logos/
+    - assets/images/animations/
 
   #----------------- LOCAL FONTS -----------------#
   fonts:

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gluco_scan/bindings/general_bindings.dart';
-import 'package:gluco_scan/features/authentication/screens/onboarding/onboarding.dart';
 import 'package:gluco_scan/routes/app_routes.dart';
+
+import 'package:gluco_scan/utils/constants/colors.dart';
 
 import 'package:gluco_scan/utils/theme/theme.dart';
 
@@ -19,16 +20,16 @@ class App extends StatelessWidget {
       initialBinding: GeneralBindings(),
       getPages: AppRoutes.pages,
 
-      home: OnBoardingScreen(),
+      ///home: OnBoardingScreen(),
 
-      ///home: const Scaffold(
-      ///  backgroundColor: LColors.primary,
-      ///  body: Center(
-      ///    child: CircularProgressIndicator(
-      ///      color: Colors.white,
-      ///    ),
-      ///  ),
-      ///),
+      home: const Scaffold(
+        backgroundColor: LColors.primary,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }

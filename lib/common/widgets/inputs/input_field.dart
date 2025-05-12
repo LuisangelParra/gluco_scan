@@ -1,14 +1,16 @@
-// lib/widgets/t_input_field.dart
+// lib/common/widgets/inputs/input_field.dart
 
 import 'package:flutter/material.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
 
-/// Campo de texto estilizado con borde “pill” y fondo lila
+/// Campo de texto estilizado con borde “pill” y fondo lila,
+/// ahora con validación integrada.
 class LInputField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
   final TextInputType keyboardType;
+  final String? Function(String?)? validator;
 
   const LInputField({
     super.key,
@@ -16,6 +18,7 @@ class LInputField extends StatelessWidget {
     required this.hintText,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
+    this.validator,
   });
 
   @override
@@ -24,9 +27,10 @@ class LInputField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      validator: validator,
       decoration: InputDecoration(
         filled: true,
-        fillColor: LColors.primary,            // fondo lila
+        fillColor: LColors.primary,
         hintText: hintText,
         hintStyle: const TextStyle(color: Colors.white70),
         border: OutlineInputBorder(

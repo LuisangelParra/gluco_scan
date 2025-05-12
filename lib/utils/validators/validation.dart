@@ -1,20 +1,20 @@
 class LValidator {
   static String? validateEmptyText(String? fieldName, String? value) {
     if (value == null || value.isEmpty) {
-      return '$fieldName is required';
+      return '$fieldName no puede estar vacío';
     }
     return null;
   }
 
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email is required';
+      return 'Email no puede estar vacío';
     }
     // Regular expression for email validation
     final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
     if (!emailRegExp.hasMatch(value)) {
-      return 'Please enter a valid email';
+      return 'Por favor ingresa un email válido';
     }
 
     return null;
@@ -22,27 +22,27 @@ class LValidator {
 
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return 'Contraseña no puede estar vacía';
     }
 
     //Check for minimum password length
     if (value.length < 6) {
-      return 'Password must be at least 6 characters long';
+      return 'La contraseña debe tener al menos 6 caracteres';
     }
 
     //Check for uppercase letters
     if (!value.contains(RegExp(r'[A-Z]'))) {
-      return 'Password must contain at least one uppercase letter';
+      return 'La contraseña debe contener al menos una letra mayúscula';
     }
 
     //Check for numbers
     if (!value.contains(RegExp(r'[0-9]'))) {
-      return 'Password must contain at least one number';
+      return 'La contraseña debe contener al menos un número';
     }
 
     // Check for special characters
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return 'Password must contain at least one special character';
+      return 'La contraseña debe contener al menos un carácter especial';
     }
 
     return null;
