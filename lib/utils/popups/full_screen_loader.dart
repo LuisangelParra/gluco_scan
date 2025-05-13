@@ -8,19 +8,15 @@ import 'package:gluco_scan/utils/helpers/helper_functions.dart';
 
 class LFullScreenLoader {
   static void openLoadingDialog(String text, String animation) {
-    showDialog(
-      context: Get.overlayContext!,
-      barrierDismissible: false,
-      builder: (_) => WillPopScope(
-        // evita que el back button cierre el diálogo
+    // Usamos Get.dialog en lugar de showDialog
+    Get.dialog(
+      WillPopScope(
         onWillPop: () async => false,
         child: Material(
-          // Material para heredar tema y gestos
           color: THelperFunctions.isDarkMode(Get.context!)
               ? LColors.darkBackground
               : LColors.lightBackground,
           child: Center(
-            // todo centrado sin overflow
             child: TAnimationLoaderWidget(
               text: text,
               animation: animation,
@@ -28,10 +24,13 @@ class LFullScreenLoader {
           ),
         ),
       ),
+      barrierDismissible: false,
+      useSafeArea: true,
     );
   }
 
   static void stopLoading() {
+    // Sólo cierra si hay diálogo abierto
     if (Get.isDialogOpen ?? false) {
       Get.back();
     }

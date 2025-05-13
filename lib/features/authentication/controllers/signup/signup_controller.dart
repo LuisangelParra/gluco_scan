@@ -84,6 +84,7 @@ class SignupController extends GetxController {
         name: name.text.trim(),
         email: email.text.trim(),
         profilePicture: '',
+        medicalHistoryFile: '',
       );
       final userRepository = Get.put(UserRepository());
       await userRepository.saveUserRecord(newUser);

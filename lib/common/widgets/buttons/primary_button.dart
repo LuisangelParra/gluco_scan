@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// Botón en forma “pill” con parámetros de color y texto.
 class PrimaryButton extends StatelessWidget {
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color backgroundColor;
   final Color foregroundColor;
   /// Padding vertical (alto del botón)

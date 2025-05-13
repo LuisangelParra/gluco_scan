@@ -6,13 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:gluco_scan/home_page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:gluco_scan/data/repositories/user/user_repository.dart';
 import 'package:gluco_scan/features/authentication/screens/login/login.dart';
 import 'package:gluco_scan/features/authentication/screens/onboarding/onboarding.dart';
 import 'package:gluco_scan/features/authentication/screens/signup/verify_email.dart';
-import 'package:gluco_scan/routes/routes.dart';
 import 'package:gluco_scan/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:gluco_scan/utils/exceptions/firebase_exceptions.dart';
 import 'package:gluco_scan/utils/exceptions/format_exceptions.dart';
@@ -42,7 +42,7 @@ class AuthenticationRepository extends GetxController {
         // Inicializa tu storage con el uid
         await LLocalStorage.init(user.uid);
         // Navega a la pantalla principal (home)
-        Get.offAllNamed(LRoutes.home);
+        Get.offAll(() => const HomeScreen());
       } else {
         // Si no ha verificado el email, muéstrale la pantalla de verificación
         Get.offAll(() => VerifyEmailScreen(email: user.email));
@@ -60,25 +60,26 @@ class AuthenticationRepository extends GetxController {
   }
 
   /// LOGIN con email/contraseña
-  Future<UserCredential> loginUserWithEmailAndPassword(
-      String email, String password) async {
+Future<UserCredential> loginUserWithEmailAndPassword(
+    String email, String password) async {
     try {
       return await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      throw LFirebaseAuthException(e.code).message;
+      throw LFirebaseAuthException(e.code);
     } on LFirebaseException catch (e) {
-      throw LFirebaseException(e.code).message;
-    } on FormatException {
+      throw e;
+    } on FormatException catch (_) {
       throw const LFormatException();
     } on PlatformException catch (e) {
-      throw LPlatformException(e.code).message;
-    } catch (_) {
-      throw 'Algo salió mal. Inténtalo de nuevo.';
+      throw LPlatformException(e.code);
+    } catch (e) {
+      throw 'Error desconocido. Intenta de nuevo.';
     }
   }
+
 
   /// REGISTRO con email/contraseña
   Future<UserCredential> registerUserWithEmailAndPassword(

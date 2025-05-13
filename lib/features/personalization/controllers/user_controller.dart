@@ -45,10 +45,10 @@ class UserController extends GetxController {
       profileLoading.value = false;
     }
   }
-
+  /// Se ejecuta tras el registro o login social
   Future<void> saveUserRecord(UserCredential? userCredentials) async {
     try {
-      // Si aún no existe registro en Firestore, lo creamos
+      // Solo crea registro si aún no existe
       if (user.value.id.isEmpty && userCredentials != null) {
         final fbUser = userCredentials.user!;
         final newUser = UserModel(
@@ -56,6 +56,7 @@ class UserController extends GetxController {
           name: fbUser.displayName ?? '',
           email: fbUser.email ?? '',
           profilePicture: fbUser.photoURL ?? '',
+          medicalHistoryFile: '', // campo inicial vacío
         );
         await userRepository.saveUserRecord(newUser);
         user(newUser);
@@ -153,39 +154,38 @@ class UserController extends GetxController {
     }
   }
 
-  /// Upload profile picture
-  Future<void> uploadUserProfilePicture() async {
+  /// (Opcional) Método para subir y guardar el JSON de historia clínica
+  Future<void> uploadMedicalHistoryFile(XFile file) async {
     try {
-      final image = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 70,
-        maxHeight: 512,
-        maxWidth: 512,
+      profileLoading.value = true;
+
+      // Usa uploadImage para subir cualquier archivo (JSON, PDF, etc.)
+      final fileUrl = await userRepository.uploadFile(
+        'Users/Files/MedicalHistory',
+        file,
       );
-      if (image != null) {
-        imageUploading.value = true;
-        final imageUrl = await userRepository.uploadImage(
-          'Users/Images/Profile',
-          image,
-        );
 
-        // Actualiza foto de perfil en Firestore
-        await userRepository.updateSingleField({'ProfilePicture': imageUrl});
+      // Actualiza el campo MedicalHistoryFile en Firestore
+      await userRepository.updateSingleField({
+        'MedicalHistoryFile': fileUrl,
+      });
 
-        user.value.profilePicture = imageUrl;
-        user.refresh();
-        LLoaders.successSnackBar(
-          title: '¡Listo!',
-          message: 'Se actualizó tu imagen de perfil.',
-        );
-      }
+      // Refleja el cambio en el modelo reactivo
+      user.value.medicalHistoryFile = fileUrl;
+      user.refresh();
+
+      LLoaders.successSnackBar(
+        title: '¡Listo!',
+        message: 'Historia clínica cargada correctamente.',
+      );
     } catch (e) {
       LLoaders.errorSnackBar(
         title: 'Error',
-        message: 'Algo salió mal: $e',
+        message: 'No se pudo cargar el archivo: $e',
       );
     } finally {
-      imageUploading.value = false;
+      profileLoading.value = false;
     }
   }
+  
 }

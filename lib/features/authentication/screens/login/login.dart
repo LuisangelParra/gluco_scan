@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gluco_scan/common/widgets/buttons/primary_button.dart';
+import 'package:gluco_scan/features/authentication/controllers/login/login_controller.dart';
 import 'package:gluco_scan/features/authentication/screens/login/widgets/auth_links.dart';
 import 'package:gluco_scan/features/authentication/screens/login/widgets/login_form.dart';
 import 'package:gluco_scan/features/authentication/screens/login/widgets/login_header.dart';
@@ -9,29 +10,11 @@ import 'package:gluco_scan/routes/routes.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
 
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _emailCtrl = TextEditingController();
-  final _passCtrl = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailCtrl.dispose();
-    _passCtrl.dispose();
-    super.dispose();
-  }
-
-  void _enter() {
-    // TODO: lógica de login
-  }
-
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(LoginController());
     return Scaffold(
       backgroundColor: LColors.primary, // lila
       body: SafeArea(
@@ -43,10 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 16),
               const LoginHeader(),
               const SizedBox(height: 32),
-              LoginForm(
-                emailCtrl: _emailCtrl,
-                passCtrl: _passCtrl,
-              ),
+              LoginForm(),
               const SizedBox(height: 16),
               AuthLinks(
                 onForgot: () => Get.toNamed(LRoutes.forgotPassword),
@@ -59,7 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 label: 'Entrar a tu zona de control',
                 backgroundColor: LColors.white,
                 foregroundColor: LColors.primary,
-                onPressed: _enter,
+                onPressed: () {
+                  // Dentro de la acción de pulsar, validamos y si pasa, procedemos
+                  if (controller.loginFormKey.currentState?.validate() ?? false) {
+                    controller.emailAndPasswordSignIn();
+                  }
+                },
               ),
             ],
           ),

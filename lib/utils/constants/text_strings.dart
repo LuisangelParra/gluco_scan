@@ -9,6 +9,13 @@ class LTexts {
   static const String riskLow = "Bajo";
   static const String riskModerate = "Moderado";
   static const String riskHigh = "Alto";
+
+  // -- GLOBAL Texts
+  static const String and = "and";
+  static const String skip = "Skip";
+  static const String done = "Done";
+  static const String submit = "Submit";
+  static const String lContinue = "Continuar";
   
   // Instructions and feedback for risk result
   static const String riskResultInfo = "Este es el resultado basado en tus respuestas.";
@@ -170,4 +177,26 @@ class LTexts {
   static const String backHome = "Volver al inicio";
   static const String reminderLabel = "Recuerda:";
   static const String encouragement = "¡Buen trabajo hoy!";
+
+  // -- Authentication Headings
+  static const String loginTitle = "¡Bienvenido de nuevo,";
+  static const String loginSubTitle =
+      "Controla tu salud de forma fácil y segura.";
+  static const String signupTitle = "Crea tu cuenta";
+  static const String forgetPasswordTitle = "Olvidé mi contraseña";
+  static const String forgetPasswordSubTitle =
+      "No te preocupes, a veces pasa. Ingresa tu correo y te enviaremos un enlace para restablecerla.";
+  static const String changeYourPasswordTitle = "Correo de restablecimiento enviado";
+  static const String changeYourPasswordSubTitle =
+      "¡Tu seguridad es nuestra prioridad! Te enviamos un enlace para cambiar tu contraseña de forma segura.";
+  static const String confirmEmail = "¡Verifica tu correo electrónico!";
+  static const String confirmEmailSubTitle =
+      "¡Felicidades! Verifica tu correo para comenzar a usar la app y cuidar tu salud.";
+  static const String emailNotReceivedMessage =
+      "¿No recibiste el correo? Revisa tu spam o reenvíalo.";
+  static const String yourAccountCreatedTitle =
+      "¡Cuenta creada con éxito!";
+  static const String yourAccountCreatedSubTitle =
+      "Bienvenido a GlucoScan: tu aliado para un estilo de vida saludable. ¡Empecemos!";
+
 }

@@ -1,51 +1,18 @@
 // lib/features/authentication/screens/signup/verify_email.dart
 
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:gluco_scan/features/authentication/controllers/signup/verify_email_controller.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
 import 'package:gluco_scan/common/widgets/buttons/primary_button.dart';
-import 'package:gluco_scan/routes/routes.dart';
-import 'package:gluco_scan/utils/popups/loaders.dart';
 
-class VerifyEmailScreen extends StatefulWidget {
-  /// El correo que se usó para el registro, opcional.
-  final String? email;
-
+class VerifyEmailScreen extends StatelessWidget {
   const VerifyEmailScreen({super.key, this.email});
-
-  @override
-  State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
-}
-
-class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
-  final _auth = FirebaseAuth.instance;
-
-  Future<void> _sendVerificationLink() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null && !user.emailVerified) {
-        await user.sendEmailVerification();
-        LLoaders.successSnackBar(
-          title: 'Enviado',
-          message: 'Revisa tu correo (${widget.email ?? 'tu correo'}) para verificar tu cuenta',
-        );
-      } else {
-        LLoaders.warningSnackBar(
-          title: 'Aviso',
-          message: 'Tu correo ya está verificado',
-        );
-      }
-    } catch (e) {
-      LLoaders.errorSnackBar(
-        title: 'Error',
-        message: 'No se pudo enviar el enlace: ${e.toString()}',
-      );
-    }
-  }
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(VerifyEmailController());
     return Scaffold(
       backgroundColor: LColors.white,
       appBar: AppBar(
@@ -82,9 +49,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
-              if (widget.email != null)
+              if (email != null)
                 Text(
-                  widget.email!,
+                  email!,
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -101,12 +68,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 label: 'Reenviar enlace',
                 backgroundColor: LColors.primary,
                 foregroundColor: LColors.textWhite,
-                onPressed: _sendVerificationLink,
+                onPressed: () => controller.sendEmailVerification(),
               ),
               const SizedBox(height: 16),
               Center(
                 child: GestureDetector(
-                  onTap: () => Get.offAllNamed(LRoutes.login),
+                  onTap: () => controller.checkEmailVerificationStatus(),
                   child: const Text(
                     'Ya verifiqué mi correo',
                     style: TextStyle(
