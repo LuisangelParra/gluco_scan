@@ -45,27 +45,32 @@ class UserController extends GetxController {
       profileLoading.value = false;
     }
   }
-  /// Se ejecuta tras el registro o login social
+
+
   Future<void> saveUserRecord(UserCredential? userCredentials) async {
     try {
-      // Solo crea registro si aún no existe
-      if (user.value.id.isEmpty && userCredentials != null) {
-        final fbUser = userCredentials.user!;
-        final newUser = UserModel(
-          id: fbUser.uid,
-          name: fbUser.displayName ?? '',
-          email: fbUser.email ?? '',
-          profilePicture: fbUser.photoURL ?? '',
-          medicalHistoryFile: '', // campo inicial vacío
-        );
-        await userRepository.saveUserRecord(newUser);
-        user(newUser);
+      // Refresh user record
+      await fetchUserRecord();
+      if (user.value.id.isEmpty) {
+        // Save user record to firestore
+        if (userCredentials != null) {
+          final name = userCredentials.user!.displayName ?? '';
+
+          final user = UserModel(
+            id: userCredentials.user!.uid,
+            name: name,
+            email: userCredentials.user!.email ?? '',
+            profilePicture: userCredentials.user!.photoURL ?? '',
+            medicalHistoryFile: '', // campo inicial vacío
+          );
+
+          await userRepository.saveUserRecord(user);
+        }
       }
     } catch (e) {
       LLoaders.warningSnackBar(
-        title: 'Advertencia',
-        message:
-            'No se pudo guardar los datos. Puedes reintentar en tu perfil.',
+        title: 'Data no saved',
+        message: 'Something went wrong. You can re-save data in your profile.',
       );
     }
   }

@@ -61,8 +61,7 @@ class TermsAndSignIn extends StatelessWidget {
                       decorationColor:
                           isDark ? LColors.white : LColors.primary,
                     ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () => Get.toNamed(LRoutes.login),
+                    recognizer: TapGestureRecognizer()..onTap = () => Get.offNamed(LRoutes.login),
                   ),
                 ],
               ),

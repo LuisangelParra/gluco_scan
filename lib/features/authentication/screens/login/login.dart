@@ -5,7 +5,7 @@ import 'package:gluco_scan/features/authentication/controllers/login/login_contr
 import 'package:gluco_scan/features/authentication/screens/login/widgets/auth_links.dart';
 import 'package:gluco_scan/features/authentication/screens/login/widgets/login_form.dart';
 import 'package:gluco_scan/features/authentication/screens/login/widgets/login_header.dart';
-import 'package:gluco_scan/features/authentication/screens/login/widgets/social_buttons_row.dart';
+import 'package:gluco_scan/common/widgets/buttons/social_buttons_row.dart';
 import 'package:gluco_scan/routes/routes.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
 
@@ -29,8 +29,8 @@ class LoginScreen extends StatelessWidget {
               LoginForm(),
               const SizedBox(height: 16),
               AuthLinks(
-                onForgot: () => Get.toNamed(LRoutes.forgotPassword),
-                onSignUp: () => Get.toNamed(LRoutes.signUp),
+                onForgot: () => Get.offNamed(LRoutes.forgotPassword),
+                onSignUp: () => Get.offNamed(LRoutes.signUp),
               ),
               const SizedBox(height: 24),
               const SocialButtonsRow(),

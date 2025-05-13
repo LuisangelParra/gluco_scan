@@ -45,4 +45,7 @@ class LImages {
       "assets/images/animations/uploading-done.json";
   static String tickCongratulationsConfettiAnimation =
       "assets/images/animations/tick-confetti.json";
+
+  static const String deliveredEmailIllustration =
+      "assets/images/animations/sammy-line-man-receives-a-mail.png";
 }

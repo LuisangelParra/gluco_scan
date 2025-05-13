@@ -21,6 +21,7 @@ class LoginForm extends StatelessWidget {
           TextFormField(
                 controller: controller.email,
                 validator: (value) => LValidator.validateEmail(value),
+                style: const TextStyle(color: LColors.textWhite),
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Iconsax.direct_right, color: LColors.textWhite,),
                   labelText: "Correo electrónico",
@@ -32,6 +33,7 @@ class LoginForm extends StatelessWidget {
                   controller: controller.password,
                   validator: (value) =>
                       LValidator.validateEmptyText('Password', value),
+                  style: const TextStyle(color: LColors.textWhite),
                   obscureText: controller.hidePassword.value,
                   decoration: InputDecoration(
                     labelText: "Contraseña",

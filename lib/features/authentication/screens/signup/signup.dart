@@ -4,7 +4,7 @@ import 'package:gluco_scan/common/widgets/buttons/primary_button.dart';
 import 'package:gluco_scan/features/authentication/controllers/signup/signup_controller.dart';
 import 'package:gluco_scan/features/authentication/screens/signup/widgets/signup_form.dart';
 import 'package:gluco_scan/features/authentication/screens/signup/widgets/signup_header.dart';
-import 'package:gluco_scan/features/authentication/screens/signup/widgets/signup_social_buttons.dart';
+import 'package:gluco_scan/common/widgets/buttons/social_buttons_row.dart';
 import 'package:gluco_scan/features/authentication/screens/signup/widgets/terms_and_signin.dart';
 
 import 'package:gluco_scan/utils/constants/colors.dart';
@@ -29,7 +29,7 @@ class SignupScreen extends StatelessWidget {
                 const SizedBox(height: 32),
                 LSignupForm(),
                 const SizedBox(height: 24),
-                const SignupSocialButtons(),
+                const SocialButtonsRow(),
                 const SizedBox(height: 16),
                 TermsAndSignIn(),
                 const SizedBox(height: 24),
