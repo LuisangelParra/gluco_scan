@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:gluco_scan/home_page.dart';
+import 'package:gluco_scan/features/dashboard/screen/dashboard.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:gluco_scan/data/repositories/user/user_repository.dart';
@@ -42,7 +42,7 @@ class AuthenticationRepository extends GetxController {
         // Inicializa tu storage con el uid
         await LLocalStorage.init(user.uid);
         // Navega a la pantalla principal (home)
-        Get.offAll(() => const HomeScreen());
+        Get.offAll(() => const DashboardScreen());
       } else {
         // Si no ha verificado el email, muéstrale la pantalla de verificación
         Get.offAll(() => VerifyEmailScreen(email: user.email));

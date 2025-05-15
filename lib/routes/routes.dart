@@ -11,9 +11,12 @@ class LRoutes {
   static const onboarding = '/onboarding';          // Pantallas de bienvenida
 
   // -- Risk Evaluation Flow
-  static const riskEvaluation = '/risk-evaluation'; // Evaluación de riesgo
+  static const dashboard = '/dashboard';
+  static const riskEval  = '/risk-evaluation'; // Evaluación de riesgo
   static const riskResult = '/risk-result';          // Resultado de la evaluación
-  static const actionPlan = '/action-plan';          // Plan de acción / recomendaciones
+  static const actionPlan = '/action-plan';  
+  static const habitTracking = '/habit-tracking';
+  static const learning = '/learning';        // Plan de acción / recomendaciones
 
   // -- Habit Tracking
   static const dailyLog = '/daily-log';              // Registro diario de hábitos
@@ -29,5 +32,7 @@ class LRoutes {
 
   // -- User
   static const profile = '/profile';                 // Perfil del usuario
-  static const settings = '/settings';               // Ajustes de la aplicación
+  static const settings = '/settings';  
+  
+               // Ajustes de la aplicación
 }
