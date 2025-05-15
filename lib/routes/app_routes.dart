@@ -4,6 +4,7 @@ import 'package:gluco_scan/features/authentication/screens/signup/signup.dart';
 import 'package:gluco_scan/features/authentication/screens/signup/verify_email.dart';
 import 'package:gluco_scan/features/authentication/screens/password_configuration/forget_password.dart';
 import 'package:gluco_scan/features/dashboard/screen/dashboard.dart';
+import 'package:gluco_scan/features/learning/screens/learning.dart';
 
 import 'package:gluco_scan/home_page.dart';
 import 'package:gluco_scan/routes/routes.dart';
@@ -21,6 +22,6 @@ class AppRoutes {
     GetPage(name: LRoutes.riskResult, page: () => const HomeScreen()),
     GetPage(name: LRoutes.actionPlan, page: () => const HomeScreen()),
     GetPage(name: LRoutes.habitTracking, page: () => const HomeScreen()),
-    GetPage(name: LRoutes.learning, page: () => const HomeScreen()),
+    GetPage(name: LRoutes.learning, page: () => const LearningScreen()),
   ];
 }
