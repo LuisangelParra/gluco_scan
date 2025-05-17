@@ -1,25 +1,27 @@
 // lib/features/dashboard/widgets/add_data_dialog.dart
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:gluco_scan/utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
 
 class AddDataDialog extends StatelessWidget {
   final TextEditingController gCtrl, iCtrl, hCtrl;
-  final VoidCallback onSave;
+  final VoidCallback? onSave;
+  final Color? backgroundColor;
 
   const AddDataDialog({
     super.key,
     required this.gCtrl,
     required this.iCtrl,
     required this.hCtrl,
-    required this.onSave,
+    this.onSave,
+    this.backgroundColor,
   });
 
   Widget _field(String label, TextEditingController ctrl) {
     return TextField(
       controller: ctrl,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
@@ -37,10 +39,11 @@ class AddDataDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: backgroundColor,            // <— aquí
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(LSizes.cardRadiusMd),
       ),
-      title: const Text('Añade tus datos'),
+      title: const Text('Añade tus datos', style: TextStyle(color: LColors.aquaLight),),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -59,12 +62,13 @@ class AddDataDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: Get.back,
-          child: const Text('Cancelar'),
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancelar', style: TextStyle(color: LColors.aquaLight),),
+          
         ),
         ElevatedButton(
-          onPressed: onSave,
-          child: const Text('Guardar'),
+          onPressed: onSave,                        // <— deshabilita si es null
+          child: const Text('Guardar', style: TextStyle(color: LColors.primary),),
         ),
       ],
     );

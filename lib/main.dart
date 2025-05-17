@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gluco_scan/data/repositories/authentication/authentication_repository.dart';
+import 'package:gluco_scan/data/repositories/dashboard/measurement_repository.dart';
 import 'firebase_options.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
@@ -27,6 +28,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then(
     (FirebaseApp value) => Get.put(AuthenticationRepository()),
   );
+  Get.put(MeasurementRepository());
 
   // -- Await Splash until other items loaded
   ///FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);

@@ -10,7 +10,7 @@ class DashboardCard extends StatelessWidget {
   final Color titleColor;
   final String? subtitle;
   final Color? subtitleColor;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const DashboardCard({
     super.key,
