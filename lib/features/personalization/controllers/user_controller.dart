@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'package:gluco_scan/data/repositories/authentication/authentication_repository.dart';
 import 'package:gluco_scan/data/repositories/user/user_repository.dart';
 import 'package:gluco_scan/features/authentication/screens/login/login.dart';
@@ -61,7 +61,7 @@ class UserController extends GetxController {
             name: name,
             email: userCredentials.user!.email ?? '',
             profilePicture: userCredentials.user!.photoURL ?? '',
-            medicalHistoryFile: '', // campo inicial vacío
+            //medicalHistoryFile: '', // campo inicial vacío
           );
 
           await userRepository.saveUserRecord(user);
@@ -159,38 +159,38 @@ class UserController extends GetxController {
     }
   }
 
-  /// (Opcional) Método para subir y guardar el JSON de historia clínica
-  Future<void> uploadMedicalHistoryFile(XFile file) async {
-    try {
-      profileLoading.value = true;
+  // /// (Opcional) Método para subir y guardar el JSON de historia clínica
+  // Future<void> uploadMedicalHistoryFile(XFile file) async {
+  //   try {
+  //     profileLoading.value = true;
 
-      // Usa uploadImage para subir cualquier archivo (JSON, PDF, etc.)
-      final fileUrl = await userRepository.uploadFile(
-        'Users/Files/MedicalHistory',
-        file,
-      );
+  //     // Usa uploadImage para subir cualquier archivo (JSON, PDF, etc.)
+  //     final fileUrl = await userRepository.uploadFile(
+  //       'Users/Files/MedicalHistory',
+  //       file,
+  //     );
 
-      // Actualiza el campo MedicalHistoryFile en Firestore
-      await userRepository.updateSingleField({
-        'MedicalHistoryFile': fileUrl,
-      });
+  //     // Actualiza el campo MedicalHistoryFile en Firestore
+  //     await userRepository.updateSingleField({
+  //       'MedicalHistoryFile': fileUrl,
+  //     });
 
-      // Refleja el cambio en el modelo reactivo
-      user.value.medicalHistoryFile = fileUrl;
-      user.refresh();
+  //     // Refleja el cambio en el modelo reactivo
+  //     user.value.medicalHistoryFile = fileUrl;
+  //     user.refresh();
 
-      LLoaders.successSnackBar(
-        title: '¡Listo!',
-        message: 'Historia clínica cargada correctamente.',
-      );
-    } catch (e) {
-      LLoaders.errorSnackBar(
-        title: 'Error',
-        message: 'No se pudo cargar el archivo: $e',
-      );
-    } finally {
-      profileLoading.value = false;
-    }
-  }
+  //     LLoaders.successSnackBar(
+  //       title: '¡Listo!',
+  //       message: 'Historia clínica cargada correctamente.',
+  //     );
+  //   } catch (e) {
+  //     LLoaders.errorSnackBar(
+  //       title: 'Error',
+  //       message: 'No se pudo cargar el archivo: $e',
+  //     );
+  //   } finally {
+  //     profileLoading.value = false;
+  //   }
+  // }
   
 }

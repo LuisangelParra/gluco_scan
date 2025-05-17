@@ -20,7 +20,7 @@ class QuestionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(question, style: const TextStyle(fontSize: 14)),
         const SizedBox(height: 8),

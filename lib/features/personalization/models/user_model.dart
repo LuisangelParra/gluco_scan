@@ -8,14 +8,14 @@ class UserModel {
   String name;
   final String email;
   String profilePicture;
-  String medicalHistoryFile; // URL al JSON con la historia clínica
+  // String medicalHistoryFile; // URL al JSON con la historia clínica
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.profilePicture,
-    required this.medicalHistoryFile,
+    // required this.medicalHistoryFile,
   });
 
   /// Modelo vacío para inicializar estados
@@ -24,7 +24,7 @@ class UserModel {
         name: '',
         email: '',
         profilePicture: '',
-        medicalHistoryFile: '',
+        // medicalHistoryFile: '',
       );
 
   /// Convierte a JSON para guardar en Firestore
@@ -33,7 +33,7 @@ class UserModel {
       'Name': name,
       'Email': email,
       'ProfilePicture': profilePicture,
-      'MedicalHistoryFile': medicalHistoryFile,
+      // 'MedicalHistoryFile': medicalHistoryFile,
     };
   }
 
@@ -50,7 +50,7 @@ class UserModel {
       name: data['Name'] as String? ?? '',
       email: data['Email'] as String? ?? '',
       profilePicture: data['ProfilePicture'] as String? ?? '',
-      medicalHistoryFile: data['MedicalHistoryFile'] as String? ?? '',
+      // medicalHistoryFile: data['MedicalHistoryFile'] as String? ?? '',
     );
   }
 }

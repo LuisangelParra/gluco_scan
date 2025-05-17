@@ -1,11 +1,13 @@
 // lib/features/dashboard/widgets/dashboard_header.dart
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../routes/routes.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
 
-class DashboardHeader extends StatelessWidget
-    implements PreferredSizeWidget {
+class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
   final String userName;
   const DashboardHeader({super.key, required this.userName});
 
@@ -26,6 +28,7 @@ class DashboardHeader extends StatelessWidget
       ),
       child: Row(
         children: [
+          // Saludo y subtítulo
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -50,10 +53,19 @@ class DashboardHeader extends StatelessWidget
               ],
             ),
           ),
+
+          // Botón Cerrar sesión
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings, color: Colors.white),
+            icon: const Icon(Icons.logout, color: Colors.white),
+            tooltip: 'Cerrar sesión',
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              // Navegar al login y eliminar historial
+              Get.offAllNamed(LRoutes.login);
+            },
           ),
+
+          // Avatar (puede usarse para ir al perfil)
           const CircleAvatar(
             radius: 20,
             backgroundColor: Colors.white,
