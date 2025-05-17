@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gluco_scan/features/dashboard/controllers/dashboard_controller.dart';
+import 'package:gluco_scan/features/dashboard/widgets/daily_intake_section.dart';
 import 'package:gluco_scan/features/dashboard/widgets/dashboard_header.dart';
 import 'package:gluco_scan/features/dashboard/widgets/mood_and_progress.dart';
+import 'package:gluco_scan/features/dashboard/widgets/next_measurement_widget.dart';
 import 'package:gluco_scan/features/dashboard/widgets/section_title.dart';
 import 'package:gluco_scan/features/dashboard/widgets/dashboard_card.dart';
 import 'package:gluco_scan/features/personalization/controllers/user_controller.dart';
@@ -43,68 +45,10 @@ class DashboardScreen extends StatelessWidget {
             const MoodAndProgress(),
             const SizedBox(height: LSizes.lg),
 
-            // Ingresos diarios
-            const SectionTitle('Ingresos diarios'),
-            const SizedBox(height: LSizes.spaceBtwItems),
-            DashboardCard(
-              backgroundColor: LColors.primary,
-              icon: Icons.add,
-              iconColor: Colors.white,
-              title: 'Añade tus datos',
-              titleColor: Colors.white,
-              onTap: () => dashboardController.showAddDataDialog(context),
-            ),
-            const SizedBox(height: LSizes.spaceBtwItems),
-            Row(
-              children: [
-                Expanded(
-                  child: Obx(() => DashboardCard(
-                        backgroundColor: LColors.accent.withValues(alpha: 0.3),
-                        icon: Icons.bloodtype,
-                        iconColor: LColors.darkBlue,
-                        title: 'Glucosa',
-                        titleColor: LColors.darkBlue,
-                        subtitle: dashboardController.glucose.value != null
-                            ? '${dashboardController.glucose.value!.toStringAsFixed(1)} mmol/L'
-                            : '--.-- mmol/L',
-                        subtitleColor:
-                            LColors.darkBlue.withValues(alpha: 0.7),
-                        onTap: () => dashboardController.showAddDataDialog(context),
-                      )),
-                ),
-                const SizedBox(width: LSizes.spaceBtwItems),
-                Expanded(
-                  child: Obx(() => DashboardCard(
-                        backgroundColor: LColors.blush,
-                        icon: Icons.opacity,
-                        iconColor: LColors.darkBlue,
-                        title: 'Insulina',
-                        titleColor: LColors.darkBlue,
-                        subtitle: dashboardController.insulin.value != null
-                            ? '${dashboardController.insulin.value!.toStringAsFixed(0)} mg/dL'
-                            : '--.-- mg/dL',
-                        subtitleColor:
-                            LColors.darkBlue.withValues(alpha: 0.7),
-                        onTap: () => dashboardController.showAddDataDialog(context),
-                      )),
-                ),
-                const SizedBox(width: LSizes.spaceBtwItems),
-                Expanded(
-                  child: Obx(() => DashboardCard(
-                        backgroundColor: LColors.mint,
-                        icon: Icons.favorite,
-                        iconColor: Colors.white,
-                        title: 'Ritmo cardíaco',
-                        titleColor: Colors.white,
-                        subtitle: dashboardController.heartRate.value != null
-                            ? '${dashboardController.heartRate.value!.toStringAsFixed(0)} bpm'
-                            : '--.-- bpm',
-                        subtitleColor: Colors.white70,
-                        onTap: () => dashboardController.showAddDataDialog(context),
-                      )),
-                ),
-              ],
-            ),
+            // Próxima medición
+            const NextMeasurementWidget(),
+
+            DailyIntakeSection(dashboardController: dashboardController),
 
             const SizedBox(height: LSizes.lg),
             // Control y monitoreo

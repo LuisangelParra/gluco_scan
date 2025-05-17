@@ -8,9 +8,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:gluco_scan/data/repositories/authentication/authentication_repository.dart';
 import 'firebase_options.dart';
 
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 Future<void> main() async {
   // Widgets Binding
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation('America/Bogota'));
   
   // -- GetX Local Storage
   await GetStorage.init();

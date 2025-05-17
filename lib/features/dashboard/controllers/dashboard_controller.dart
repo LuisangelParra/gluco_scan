@@ -11,6 +11,22 @@ class DashboardController extends GetxController {
   final insulin = RxnDouble();
   final heartRate = RxnDouble();
 
+  final Rxn<DateTime> lastMeasurementTime = Rxn<DateTime>();
+
+  // Hora de la próxima medición
+  final Rx<TimeOfDay> nextMeasurement =
+      Rx<TimeOfDay>(TimeOfDay(hour: 8, minute: 0));
+
+  /// Llamar a este método después de guardar una medición
+  void updateLastMeasurement(DateTime timestamp) {
+    lastMeasurementTime.value = timestamp;
+  }
+
+  /// Permite cambiar la próxima hora de medición
+  void setNextMeasurement(TimeOfDay t) {
+    nextMeasurement.value = t;
+  }
+
   /// Abre el diálogo para añadir datos
   Future<void> showAddDataDialog(BuildContext context) async {
     final gCtrl = TextEditingController(text: glucose.value?.toString());

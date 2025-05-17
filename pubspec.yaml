@@ -26,6 +26,7 @@ dependencies:
   flex_color_scheme: ^8.2.0
   flutter_native_splash: ^2.4.6
   uuid: ^4.4.2
+  timezone: ^0.10.1
   
 
   # State management
