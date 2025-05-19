@@ -10,7 +10,7 @@ class RiskGauge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 1) Extraer probabilidad (0.0–1.0) y pasarla a 0–100
-    final raw = (resultado['probabilidad'] as num?)?.toDouble() ?? 0.9;
+    final raw = (resultado['probabilidad'] as num?)?.toDouble() ?? 0.0;
     final pct = (raw * 100).clamp(0.0, 100.0);
 
     // 2) Definir umbrales y colores
