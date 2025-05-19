@@ -1,47 +1,79 @@
-// lib/features/habit_tracking/services/habit_service.dart
-
-import 'package:uuid/uuid.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/habit_item.dart';
-import 'package:flutter/material.dart';
-
 
 class HabitService {
-  //final _uuid = const Uuid();
+  static final instance = HabitService._();
+  final _db = FirebaseFirestore.instance;
+  final _uid = FirebaseAuth.instance.currentUser!.uid;
 
-  /// Mock inicial
-  final List<HabitItem> _storage = [
-    HabitItem(
-      id: const Uuid().v4(),
-      title: '30 min de caminata ligera',
-      subtitle: 'Actividad Física · Hoy',
-      category: 'activity',
-      icon: Icons.directions_run,
-      backgroundColor: Colors.teal.shade50,
-      iconColor: Colors.teal,
-      isCompleted: true,
-      quantity: '30 min',
-    ),
-    // ... otros ítems ...
-  ];
+  HabitService._();
 
-  Future<List<HabitItem>> fetchHabits() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return List.from(_storage);
+  /// Descarga de /action_plans/{low|moderate|high} las secciones con sus
+  /// listas de recomendaciones.
+  Future<Map<String, List<String>>> fetchDefaultSections(String level) async {
+    final doc = await _db
+        .collection('action_plans')
+        .doc(level)
+        .get();
+    if (!doc.exists) return {};
+    final raw = doc.data()!['sections'] as Map<String, dynamic>;
+    return {
+      for (final e in raw.entries) 
+        e.key: List<String>.from(e.value as List)
+    };
   }
 
-  Future<void> addHabit(HabitItem item) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    _storage.add(item);
+  /// Guarda un hábito bajo /users/$_uid/habits/{id}
+  Future<void> saveHabit(HabitItem h) {
+    return _db
+      .collection('users')
+      .doc(_uid)
+      .collection('habits')
+      .doc(h.id)
+      .set(h.toJson());
   }
 
-  Future<void> removeHabit(String id) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    _storage.removeWhere((h) => h.id == id);
+  /// Recupera todos los hábitos del usuario
+  Future<List<HabitItem>> fetchUserHabits() async {
+    final snap = await _db
+      .collection('users')
+      .doc(_uid)
+      .collection('habits')
+      .orderBy('id') // o createdAt si lo añades
+      .get();
+    return snap.docs
+      .map((d) => HabitItem.fromJson(d.data()))
+      .toList();
   }
 
-  Future<void> updateHabit(HabitItem updated) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    final idx = _storage.indexWhere((h) => h.id == updated.id);
-    if (idx >= 0) _storage[idx] = updated;
+  /// Actualiza sólo el campo isCompleted
+  Future<void> toggleCompleted(HabitItem h) {
+    return _db
+      .collection('users')
+      .doc(_uid)
+      .collection('habits')
+      .doc(h.id)
+      .update({'isCompleted': h.isCompleted});
+  }
+
+  /// Comprueba si existe el documento, para evitar duplicados
+  Future<bool> exists(String id) async {
+    final doc = await _db
+      .collection('users')
+      .doc(_uid)
+      .collection('habits')
+      .doc(id)
+      .get();
+    return doc.exists;
+  }
+
+   Future<void> deleteHabit(String id) {
+    return _db
+      .collection('users')
+      .doc(_uid)
+      .collection('habits')
+      .doc(id)
+      .delete();
   }
 }

@@ -14,33 +14,85 @@ class HabitCategoryFilter extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(25)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+      ),
       child: Obx(() {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildButton('activity', 'Actividad\nFísica', Colors.teal, ctrl),
-            const VerticalDivider(color: Colors.grey, thickness: 0.5, indent: 10, endIndent: 10),
-            _buildButton('nutrition', 'Alimentación\nSaludable', Colors.black87, ctrl),
-            const VerticalDivider(color: Colors.grey, thickness: 0.5, indent: 10, endIndent: 10),
-            _buildButton('sleep', 'Sueño', const Color(0xFF5956A6), ctrl),
+            Expanded(
+              child: _buildButton(
+                cat: 'activity',
+                label: 'Actividad\nFísica',
+                iconColor: Colors.teal,
+                ctrl: ctrl,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: _buildButton(
+                cat: 'nutrition',
+                label: 'Alimentación\nSaludable',
+                iconColor: Colors.green,
+                ctrl: ctrl,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: _buildButton(
+                cat: 'sleep',
+                label: 'Sueño',
+                iconColor: const Color(0xFF5956A6),
+                ctrl: ctrl,
+              ),
+            ),
           ],
         );
       }),
     );
   }
 
-  Widget _buildButton(String cat, String label, Color iconColor, HabitTrackingController ctrl) {
-    final isSel = ctrl.selectedCategory.value == cat;
+  Widget _buildButton({
+    required String cat,
+    required String label,
+    required Color iconColor,
+    required HabitTrackingController ctrl,
+  }) {
+    final isSelected = ctrl.selectedCategory.value == cat;
     return InkWell(
       onTap: () => ctrl.toggleCategory(cat),
+      borderRadius: BorderRadius.circular(20),
       child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
         decoration: BoxDecoration(
-          color: isSel ? Colors.grey.shade300 : Colors.white,
+          color: isSelected ? iconColor.withOpacity(0.15) : Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        child: Row(children: [Icon(HabitItem.iconForCategory(cat), color: iconColor, size: 22), const SizedBox(width:4), Text(label, style: TextStyle(color: iconColor, fontSize:13, fontWeight: FontWeight.w500))]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              HabitItem.iconForCategory(cat),
+              color: iconColor,
+              size: 20,
+            ),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: iconColor,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

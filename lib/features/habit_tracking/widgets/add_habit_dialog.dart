@@ -1,12 +1,9 @@
-// lib/features/habit_tracking/widgets/add_habit_dialog.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/habit_tracking_controller.dart';
 
 class AddHabitDialog extends StatefulWidget {
   const AddHabitDialog({super.key});
-
   @override
   State<AddHabitDialog> createState() => _AddHabitDialogState();
 }
@@ -41,8 +38,9 @@ class _AddHabitDialogState extends State<AddHabitDialog> {
             ),
             const SizedBox(height: 16),
             const Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Categoría:', style: TextStyle(fontWeight: FontWeight.w500))),
+              alignment: Alignment.centerLeft,
+              child: Text('Categoría:', style: TextStyle(fontWeight: FontWeight.w600)),
+            ),
             RadioListTile<String>(
               title: const Text('Actividad Física'),
               value: 'activity',
@@ -64,19 +62,21 @@ class _AddHabitDialogState extends State<AddHabitDialog> {
               onChanged: (v) => setState(() => _category = v!),
               activeColor: const Color(0xFF5956A6),
             ),
-            if (_category == 'sleep' || _category == 'nutrition' || _category == 'activity')
-              TextField(
-                decoration: InputDecoration(
-                  labelText: _category == 'sleep'
-                      ? 'Horas dormidas'
-                      : _category == 'nutrition'
-                          ? 'Cantidad de comida'
-                          : 'Duración / tipo actividad',
-                  border: const OutlineInputBorder(),
-                ),
-                keyboardType: _category == 'sleep' ? TextInputType.number : TextInputType.text,
-                onChanged: (v) => _quantity = v,
+            const SizedBox(height: 16),
+            TextField(
+              decoration: InputDecoration(
+                labelText: _category == 'sleep'
+                    ? 'Horas dormidas'
+                    : _category == 'nutrition'
+                        ? 'Cantidad de porción'
+                        : 'Duración/Intensidad',
+                border: const OutlineInputBorder(),
               ),
+              keyboardType: _category == 'sleep'
+                  ? TextInputType.number
+                  : TextInputType.text,
+              onChanged: (v) => _quantity = v.trim(),
+            ),
           ],
         ),
       ),
@@ -85,10 +85,10 @@ class _AddHabitDialogState extends State<AddHabitDialog> {
         ElevatedButton(
           onPressed: () {
             final title = _titleCtrl.text.trim();
-            if (title.isNotEmpty) {
-              _ctrl.addHabit(title, _category, _quantity);
-              Navigator.pop(context);
-            }
+            if (title.isEmpty) return;
+            // Llama a tu método existente
+            _ctrl.addHabit(title, _category, _quantity);
+            Navigator.pop(context);
           },
           child: const Text('Guardar'),
         ),

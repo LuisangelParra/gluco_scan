@@ -1,5 +1,3 @@
-// lib/features/habit_tracking/screens/habit_tracking_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../routes/routes.dart';
@@ -13,10 +11,10 @@ import '../widgets/add_habit_button.dart';
 class HabitTrackingScreen extends StatelessWidget {
   const HabitTrackingScreen({super.key});
 
+  /// Recibe opcionalmente el nivel de riesgo ('low','moderate','high')
   @override
   Widget build(BuildContext context) {
-    // Inyecta el controller (lazyPut en bindings o aquí)
-    final ctrl = Get.put(HabitTrackingController());
+    final ctrl = Get.find<HabitTrackingController>();
 
     return Scaffold(
       backgroundColor: const Color(0xFF6665A9),
@@ -28,7 +26,11 @@ class HabitTrackingScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Text(
                 'Visualiza y administra tus hábitos diarios de forma clara y motivadora.',
-                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -37,7 +39,10 @@ class HabitTrackingScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    const HabitTipCard('Dormir al menos 7 horas mejora tu salud mental y física.'),
+                    const HabitTipCard(
+                      'Dormir al menos 7 horas mejora tu salud mental y física.'
+                    ),
+                    const SizedBox(height: 16),
                     const HabitCategoryFilter(),
                     const SizedBox(height: 16),
                     Expanded(
@@ -47,7 +52,11 @@ class HabitTrackingScreen extends StatelessWidget {
                           return const Center(
                             child: Text(
                               'No hay hábitos en esta categoría',
-                              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500
+                              ),
                               textAlign: TextAlign.center,
                             ),
                           );
@@ -71,9 +80,18 @@ class HabitTrackingScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.white,
         elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
         onPressed: () => Get.toNamed(LRoutes.learning),
-        label: const Text('¡Aprende!', style: TextStyle(color: Color(0xFF5956A6), fontWeight: FontWeight.bold, fontSize: 15)),
+        label: const Text(
+          '¡Aprende!',
+          style: TextStyle(
+            color: Color(0xFF5956A6),
+            fontWeight: FontWeight.bold,
+            fontSize: 15
+          )
+        ),
       ),
     );
   }

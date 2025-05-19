@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gluco_scan/routes/routes.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
 
 import '../controllers/action_plan_controller.dart';
@@ -65,7 +66,7 @@ class ActionPlanScreen extends StatelessWidget {
               // ─── Botones de acción inferiores ───────────────────────
               ActionPlanButtons(
                 primaryColor: ctrl.selectedLevelColor,
-                onStart:      () {/* TODO: iniciar seguimiento */},
+                onStart:      () => Get.toNamed(LRoutes.habitTracking),
                 onBack:       () => Get.back(),
               ),
             ],

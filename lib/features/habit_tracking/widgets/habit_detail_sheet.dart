@@ -1,5 +1,3 @@
-// lib/features/habit_tracking/widgets/habit_detail_sheet.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/habit_tracking_controller.dart';
@@ -13,45 +11,33 @@ class HabitDetailSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final ctrl = Get.find<HabitTrackingController>();
     return Container(
+      padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      padding: const EdgeInsets.all(20),
-      child: Wrap(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: habit.backgroundColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(habit.icon, color: habit.iconColor, size: 24),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(habit.title,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              ),
-            ],
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: habit.backgroundColor,
+              child: Icon(habit.icon, color: habit.iconColor),
+            ),
+            title: Text(habit.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            subtitle: Text(habit.subtitle),
           ),
-          const SizedBox(height: 16),
-          Text('Categoría: ${_categoryName(habit.category)}'),
-          const SizedBox(height: 8),
-          Text('Estado: ${habit.isCompleted ? "Completado" : "Pendiente"}'),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton.icon(
                 onPressed: () {
                   ctrl.toggleComplete(habit);
                   Navigator.pop(context);
                 },
-                icon: Icon(habit.isCompleted ? Icons.check_box : Icons.check_box_outline_blank),
-                label: Text(habit.isCompleted ? 'Marcar pendiente' : 'Marcar completado'),
+                icon: Icon(habit.isCompleted ? Icons.undo : Icons.check),
+                label: Text(habit.isCompleted ? 'Marcar pendiente' : 'Marcar\ncompletado'),
               ),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
@@ -64,21 +50,9 @@ class HabitDetailSheet extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 16),
         ],
       ),
     );
-  }
-
-  String _categoryName(String c) {
-    switch (c) {
-      case 'activity':
-        return 'Actividad Física';
-      case 'nutrition':
-        return 'Alimentación Saludable';
-      case 'sleep':
-        return 'Sueño';
-      default:
-        return 'Otro';
-    }
   }
 }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gluco_scan/data/repositories/risk_evaluation/risk_evaluation_repository.dart';
+import 'package:gluco_scan/features/habit_tracking/controllers/habit_tracking_controller.dart';
 import 'package:gluco_scan/routes/routes.dart';
 
 class RiskEvaluationController extends GetxController {
@@ -84,6 +85,9 @@ class RiskEvaluationController extends GetxController {
     try {
       // 3) Llamar al repositorio
       final result = await _repo.predict(payload);
+      final riesgo = result['riesgo_diabetes'] as String;
+      // **¡Aquí asignamos los hábitos!**
+      await HabitTrackingController.instance.assignHabitsForRisk(riesgo);
 
       // 4) Navegar a resultado
       Get.toNamed(LRoutes.riskResult, arguments: result);
