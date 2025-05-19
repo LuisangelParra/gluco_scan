@@ -56,6 +56,8 @@ class HabitItem {
         return Icons.eco_outlined;
       case 'sleep':
         return Icons.nightlight_round;
+      case 'other':                
+        return Icons.self_improvement;
       default:
         return Icons.check_circle;
     }
@@ -69,6 +71,8 @@ class HabitItem {
         return Colors.green.shade50;
       case 'sleep':
         return const Color(0xFF5956A6).withValues(alpha: .1);
+      case 'other':                
+        return Colors.orange.shade50;
       default:
         return Colors.grey.shade200;
     }
@@ -82,6 +86,8 @@ class HabitItem {
         return Colors.green;
       case 'sleep':
         return const Color(0xFF5956A6);
+      case 'other':
+        return Colors.orange;
       default:
         return Colors.grey;
     }

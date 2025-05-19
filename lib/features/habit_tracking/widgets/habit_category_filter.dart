@@ -47,6 +47,15 @@ class HabitCategoryFilter extends StatelessWidget {
                 ctrl: ctrl,
               ),
             ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: _buildButton(
+                cat: 'other',
+                label: 'Otros',
+                iconColor: const Color(0xFF6665A9),
+                ctrl: ctrl,
+              ),
+            ),
           ],
         );
       }),
@@ -66,7 +75,7 @@ class HabitCategoryFilter extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
         decoration: BoxDecoration(
-          color: isSelected ? iconColor.withOpacity(0.15) : Colors.white,
+          color: isSelected ? iconColor.withValues(alpha: .15) : Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(

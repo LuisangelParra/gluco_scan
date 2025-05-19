@@ -83,13 +83,16 @@ class RiskEvaluationController extends GetxController {
     };
 
     try {
-      // 3) Llamar al repositorio
       final result = await _repo.predict(payload);
       final riesgo = result['riesgo_diabetes'] as String;
-      // **¡Aquí asignamos los hábitos!**
+
+      // **1) Asegúrate de tener el controller instanciado**
+      Get.put(HabitTrackingController());
+
+      // **2) Asignar hábitos según riesgo**
       await HabitTrackingController.instance.assignHabitsForRisk(riesgo);
 
-      // 4) Navegar a resultado
+      // 3) Navegar a Result
       Get.toNamed(LRoutes.riskResult, arguments: result);
     } catch (e) {
       Get.snackbar("Error", "No se pudo obtener resultado: $e");

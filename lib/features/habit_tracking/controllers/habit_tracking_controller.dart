@@ -63,51 +63,47 @@ class HabitTrackingController extends GetxController {
     selectedCategory.value = cat;
   }
 
-  /// 4) Asigna los hábitos recomendados para el nivel de riesgo
+  /// ← Reemplaza ESTE método:
   Future<void> assignHabitsForRisk(String riesgo) async {
-    // mapea "Alta"/"Moderada"/"Baja" → docId "high"/"moderate"/"low"
-    final level = riesgo.toLowerCase() == 'alta'
+    // 1) determina low/moderate/high
+    final lvl = riesgo.toLowerCase() == 'alta'
         ? 'high'
         : riesgo.toLowerCase() == 'moderada'
             ? 'moderate'
             : 'low';
 
-    final doc = await _firestore.collection('action_plans').doc(level).get();
-    if (!doc.exists) return;
+    // 2) traemos subcolección items de habit_templates
+    final tplSnap = await _firestore
+        .collection('habit_templates')
+        .doc(lvl)
+        .collection('items')
+        .get();
 
-    final sections = Map<String, dynamic>.from(doc.data()!['sections'] as Map);
-    final nuevos = <HabitItem>[];
+    // 3) convertimos a HabitItem
+    final nuevos = tplSnap.docs.map((d) {
+      final data = d.data();
+      return HabitItem.fromJson({
+        ...data,
+        'id': d.id,
+        // aseguramos el campo isCompleted en false
+        'isCompleted': false,
+      });
+    }).toList();
 
-    // construye la lista plana de HabitItem
-    sections.forEach((seccion, lista) {
-      final cat = _categoryFromSection(seccion);
-      for (var i = 0; i < (lista as List).length; i++) {
-        final text = lista[i] as String;
-        nuevos.add(HabitItem(
-          id: '${level}_${seccion}_$i',
-          title: text,
-          subtitle: seccion,
-          category: cat,
-          icon: HabitItem.iconForCategory(cat),
-          backgroundColor: HabitItem.bgColorForCategory(cat),
-          iconColor: HabitItem.iconColorForCategory(cat),
-        ));
-      }
-    });
-
-    // refresca Firestore: borra viejos y sube nuevos
+    // 4) batch: borro todo en Users/uid/Habits y escribo nuevos
     final batch = _firestore.batch();
     final ref = _firestore.collection('Users').doc(_uid).collection('Habits');
+
     final existentes = await ref.get();
-    for (var d in existentes.docs) {
+    for (final d in existentes.docs) {
       batch.delete(d.reference);
     }
-    for (var h in nuevos) {
+    for (final h in nuevos) {
       batch.set(ref.doc(h.id), h.toJson());
     }
     await batch.commit();
 
-    // actualiza la lista local
+    // 5) actualizo la lista local
     allHabits.assignAll(nuevos);
   }
 
