@@ -1,39 +1,29 @@
 // lib/features/risk_evaluation/widgets/legend_pill.dart
 import 'package:flutter/material.dart';
 
-class LegendPill extends StatelessWidget {
-  final String label;
-  final Color backgroundColor;
-  final Color textColor;
-  const LegendPill({
-    required this.label,
-    required this.backgroundColor,
-    required this.textColor,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(24)),
-      child: Text(label, style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
-    );
-  }
-}
-
 class LegendRow extends StatelessWidget {
   const LegendRow({super.key});
-
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: const [
-        LegendPill(label: 'Bajo', backgroundColor: Color(0xFFFFD0BE), textColor: Color(0xFFB46242)),
-        LegendPill(label: 'Moderado', backgroundColor: Color(0xFFFFEDC3), textColor: Color(0xFFAE8421)),
-        LegendPill(label: 'Alto', backgroundColor: Color(0xFF676DB1), textColor: Colors.white),
-      ],
-    );
-  }
+  Widget build(BuildContext c) => Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: const [
+      _LegendPill('Bajo', Color(0xFFFFD0BE), Color(0xFFB46242)),
+      SizedBox(width:8),
+      _LegendPill('Moderado', Color(0xFFFFEDC3), Color(0xFFAE8421)),
+      SizedBox(width:8),
+      _LegendPill('Alto', Color(0xFF676DB1), Colors.white),
+    ],
+  );
+}
+
+class _LegendPill extends StatelessWidget {
+  final String label;
+  final Color background, text;
+  const _LegendPill(this.label, this.background, this.text);
+  @override
+  Widget build(BuildContext c) => Container(
+    padding: const EdgeInsets.symmetric(horizontal:12, vertical:6),
+    decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(16)),
+    child: Text(label, style: TextStyle(color: text, fontWeight: FontWeight.bold)),
+  );
 }
