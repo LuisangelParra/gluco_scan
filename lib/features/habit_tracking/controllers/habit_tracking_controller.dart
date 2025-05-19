@@ -7,7 +7,7 @@ import '../models/habit_item.dart';
 
 class HabitTrackingController extends GetxController {
   /// Permite acceder a la misma instancia desde otros sitios
-  static HabitTrackingController get instance => Get.put(HabitTrackingController());
+  static HabitTrackingController get instance => Get.find<HabitTrackingController>(); 
 
   final _firestore = FirebaseFirestore.instance;
   final _uid       = FirebaseAuth.instance.currentUser!.uid;

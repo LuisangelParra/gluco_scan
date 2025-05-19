@@ -14,7 +14,7 @@ class HabitTrackingScreen extends StatelessWidget {
   /// Recibe opcionalmente el nivel de riesgo ('low','moderate','high')
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.find<HabitTrackingController>();
+    final ctrl = Get.put(HabitTrackingController());
 
     return Scaffold(
       backgroundColor: const Color(0xFF6665A9),
