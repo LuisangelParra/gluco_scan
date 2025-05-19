@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gluco_scan/features/personalization/controllers/user_controller.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
@@ -13,6 +14,7 @@ class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userCtrl = Get.find<UserController>();
     return Container(
       decoration: const BoxDecoration(
         color: LColors.primary,
@@ -66,11 +68,23 @@ class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
           ),
 
           // Avatar (puede usarse para ir al perfil)
-          const CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.white,
-            child: Icon(Icons.person, color: LColors.primary),
-          ),
+          // Avatar: abre pantalla de perfil
+          Obx(() {
+            final url = userCtrl.user.value.profilePicture;
+            return GestureDetector(
+              onTap: () => Get.toNamed(LRoutes.profile),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.white,
+                backgroundImage: url.isNotEmpty
+                  ? NetworkImage(url) as ImageProvider
+                  : null,
+                child: url.isEmpty
+                  ? const Icon(Icons.person, color: LColors.primary)
+                  : null,
+              ),
+            );
+          }),
         ],
       ),
     );
