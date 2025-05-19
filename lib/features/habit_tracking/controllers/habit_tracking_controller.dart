@@ -160,18 +160,4 @@ class HabitTrackingController extends GetxController {
         .doc(habit.id)
         .delete();
   }
-
-  /// Helper: mapea nombre de sección ↔ categoría interna
-  String _categoryFromSection(String s) {
-    switch (s.toLowerCase()) {
-      case 'alimentación':
-        return 'nutrition';
-      case 'ejercicio':
-        return 'activity';
-      case 'hábitos de sueño':
-        return 'sleep';
-      default:
-        return 'other';
-    }
-  }
 }
