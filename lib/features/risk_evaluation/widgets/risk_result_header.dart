@@ -1,12 +1,10 @@
 // lib/features/risk_evaluation/widgets/risk_result_header.dart
+
 import 'package:flutter/material.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
 
 class RiskResultHeader extends StatelessWidget implements PreferredSizeWidget {
   const RiskResultHeader({super.key});
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 16);
 
   @override
   Widget build(BuildContext context) {
@@ -23,4 +21,7 @@ class RiskResultHeader extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 16);
 }

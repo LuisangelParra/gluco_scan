@@ -68,4 +68,10 @@ class LColors {
   static const Color softGrey = Color(0xFFF4F4F4);
   static const Color lightGrey = offWhite;
   static const Color white = Color(0xFFFFFFFF);
+
+  static const Color riskLow    = Color(0xFF4CAF50); // verde
+  static const Color riskMedium = Color(0xFFFFC107); // ámbar
+  static const Color riskHigh   = Color(0xFFF44336); // rojo
+  static const Color riskTrackBg= Color(0xFFE0E0E0); // gris claro
+  static const Color mint2       = Color(0xFF2E7D32);
 }

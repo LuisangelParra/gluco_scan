@@ -1,61 +1,94 @@
 // lib/features/risk_evaluation/widgets/risk_recommendations.dart
-import 'package:flutter/material.dart';
-import 'package:gluco_scan/utils/constants/colors.dart';
 
+import 'package:flutter/material.dart';
+
+// Widget que muestra recomendaciones detalladas,
+// con una pastilla de color para cada nivel.
 class RiskRecommendations extends StatelessWidget {
   final Map<String, dynamic> resultado;
-  const RiskRecommendations({required this.resultado, super.key});
+  const RiskRecommendations({super.key, required this.resultado});
+
+  static const Color _lowColor   = Color(0xFF66BB6A);
+  static const Color _midColor   = Color(0xFFFFEE58);
+  static const Color _highColor  = Color(0xFFE53935);
 
   @override
   Widget build(BuildContext context) {
-    final prob = ((resultado['probabilidad'] as num?) ?? 0).toDouble().clamp(0.0, 1.0);
-    final nivel = prob < 0.33 ? 0 : (prob < 0.66 ? 1 : 2);
-
-    const labels = ['Bajo', 'Moderado', 'Alto'];
-    const recommendationBg = [
-      Color(0xFFFFD0BE),
-      Color(0xFFFFEDC3),
-      Color(0xFF676DB1),
-    ];
-    const recommendationTextColor = [
-      Color(0xFFB46242),
-      Color(0xFFAE8421),
-      LColors.primary,
-    ];
-    final recommendations = [
-      'Sigue manteniendo una alimentación equilibrada y actividad física regular.',
-      'Intenta aumentar tu consumo de vegetales y hacer ejercicio al menos 30 min al día.',
-      'Consulta a un profesional de la salud para una evaluación más detallada.',
+    final labels = ['Baja', 'Moderada', 'Alta'];
+    final recs = [
+      [
+        'Mantén una dieta balanceada con frutas, verduras y proteínas saludables.',
+        'Reduce el consumo de azúcar y alimentos ultraprocesados.',
+        'Consulta a un nutricionista para una dieta personalizada.',
+      ],
+      [
+        'Sigue con tu rutina de actividad física de al menos 30 min al día.',
+        'Aumenta tu actividad a mínimo 5 días a la semana.',
+        'Consulta con un especialista antes de iniciar una rutina de ejercicio.',
+      ],
+      [
+        'Practica técnicas de relajación como meditación o respiración profunda.',
+        'Reduce la exposición al estrés con pausas activas y momentos de descanso.',
+        'Mantén un horario de sueño regular de 7–8 horas.',
+      ],
     ];
 
     return Column(
-      children: List.generate(3, (j) {
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: List.generate(3, (i) {
+        final color = i == 0
+            ? _lowColor
+            : i == 1
+                ? _midColor
+                : _highColor;
         return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Pastilla con etiqueta
               Container(
-                width: 120,
-                height: 48,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: recommendationBg[j],
+                  color: color,
                   borderRadius: BorderRadius.circular(24),
                 ),
-                alignment: Alignment.center,
                 child: Text(
-                  labels[j],
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: j == nivel ? Colors.white : recommendationTextColor[j],
-                  ),
+                  labels[i],
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(width: 12),
+              // Lista de recomendaciones
               Expanded(
-                child: Text(
-                  recommendations[j],
-                  style: const TextStyle(color: Colors.black87, fontSize: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: recs[i].map((text) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            margin: const EdgeInsets.only(top: 6),
+                            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              text,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],

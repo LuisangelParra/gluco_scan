@@ -1,7 +1,10 @@
+// lib/features/risk_evaluation/screens/risk_result_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gluco_scan/routes/routes.dart';
 import 'package:gluco_scan/utils/constants/colors.dart';
+
 import '../widgets/risk_result_header.dart';
 import '../widgets/risk_gauge.dart';
 import '../widgets/risk_level_list.dart';
@@ -20,16 +23,16 @@ class RiskResultScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
-            const IntroText(),
+            const _IntroText(),
             const SizedBox(height: 24),
-            ResultSummary(resultado: resultado),
+            _ResultSummary(resultado: resultado),
             const SizedBox(height: 24),
             RiskGauge(resultado: resultado),
             const SizedBox(height: 24),
             RiskLevelList(resultado: resultado),
             const SizedBox(height: 24),
             RiskRecommendations(resultado: resultado),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -40,7 +43,7 @@ class RiskResultScreen extends StatelessWidget {
                 icon: const Icon(Icons.visibility),
                 label: const Text('Ver plan de acción'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: LColors.mint,
+                  backgroundColor: LColors.primary,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
@@ -56,30 +59,31 @@ class RiskResultScreen extends StatelessWidget {
   }
 }
 
-class IntroText extends StatelessWidget {
-  const IntroText({super.key});
+class _IntroText extends StatelessWidget {
+  const _IntroText();
   @override
   Widget build(BuildContext c) => const Text(
-    'Este es el resultado basado en tus respuestas.\n'
-    'Sigue las instrucciones para mejorar tu salud.',
-    textAlign: TextAlign.center,
-    style: TextStyle(fontSize: 14, color: Colors.black87),
-  );
+        'Este es el resultado basado en tus respuestas.\n'
+        'Sigue las instrucciones para mejorar tu salud.',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 14, color: Colors.black87),
+      );
 }
 
-class ResultSummary extends StatelessWidget {
+class _ResultSummary extends StatelessWidget {
   final Map<String, dynamic> resultado;
-  const ResultSummary({super.key, required this.resultado});
+  const _ResultSummary({required this.resultado});
 
   @override
   Widget build(BuildContext context) {
-    final clasificacion = resultado['riesgo_diabetes'] ?? 'Desconocido';
-    final prob = (resultado['probabilidad'] as num?)?.toDouble() ?? 0.0;
-    final bmi = (resultado['imc'] as num?)?.toDouble() ?? 0.0;
+    final String riesgo = resultado['riesgo_diabetes'] ?? 'Desconocido';
+    final double prob = (resultado['probabilidad'] as num?)?.toDouble() ?? 0.0;
+    final double bmi = (resultado['imc'] as num?)?.toDouble() ?? 0.0;
+
     return Column(
       children: [
         Text(
-          'Diagnóstico: $clasificacion',
+          'Diagnóstico: $riesgo',
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),

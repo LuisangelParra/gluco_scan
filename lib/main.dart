@@ -30,8 +30,5 @@ Future<void> main() async {
   );
   Get.put(MeasurementRepository());
 
-  // -- Await Splash until other items loaded
-  ///FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
   runApp(const App());
 }
