@@ -22,7 +22,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userController = Get.put(UserController());
-    final dashboardController = Get.put(DashboardController());
+    final DashboardController ctrl = DashboardController.instance;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -48,7 +48,7 @@ class DashboardScreen extends StatelessWidget {
             // Próxima medición
             const NextMeasurementWidget(),
 
-            DailyIntakeSection(dashboardController: dashboardController),
+            DailyIntakeSection(dashboardController: ctrl),
 
             const SizedBox(height: LSizes.lg),
             // Control y monitoreo
