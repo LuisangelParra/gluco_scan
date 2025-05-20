@@ -5,45 +5,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/content_item.dart';
 
 class LearningService {
-  final _col = FirebaseFirestore.instance.collection('learning_content');
+  final _db = FirebaseFirestore.instance;
 
-  /// Devuelve consejos (texto) según categoría
-  Future<String> fetchAdvice(String categoryKey) async {
-    final doc = await _col.doc('advice_$categoryKey').get();
-    return doc.data()?['tip'] as String? ?? '';
+  /// Trae el tip breve para la cabecera
+  Future<String> fetchAdvice(String category) async {
+    final snap = await _db
+      .collection('learning_tips')
+      .where('category', isEqualTo: category)
+      .limit(1)
+      .get();
+    if (snap.docs.isEmpty) return '';
+    return snap.docs.first.data()['tip'] as String;
   }
 
-  /// Devuelve la lista de artículos/videos
-  Future<List<ContentItem>> fetchContent(String categoryKey) async {
-    final snap = await _col
-        .where('categoryKey', isEqualTo: categoryKey)
-        .orderBy('order', descending: false)
-        .get();
-
-    return snap.docs.map((doc) {
-      return ContentItem.fromJson(
-        doc.data(),
-        idFromDoc: doc.id,
-      );
-    }).toList();
+  /// Trae todos los artículos/videos de una categoría
+  Future<List<ContentItem>> fetchContent(String category) async {
+    final snap = await _db
+      .collection('learning_content')
+      .where('category', isEqualTo: category)
+      .orderBy('title') // u otro campo si prefieres
+      .get();
+    return snap.docs
+      .map((d) => ContentItem.fromJson(d.id, d.data()))
+      .toList();
   }
 
-  // Colores e iconos para el AppBar
-  Color headerColor(String cat) {
-    switch (cat) {
-      case 'exercise':   return const Color(0xFF6C5DD3);
-      case 'prevention': return const Color(0xFFF8C628);
-      case 'nutrition':
-      default:            return const Color(0xFF20C3AF);
+  /// Colores e iconos para cada pestaña
+  Color headerColor(String category) {
+    switch (category) {
+      case 'nutrition':  return const Color(0xFF00BFA6);
+      case 'exercise':   return const Color(0xFF6665A9);
+      case 'prevention': return const Color(0xFFF9A825);
+      default:           return Colors.grey;
     }
   }
-
-  IconData headerIcon(String cat) {
-    switch (cat) {
+  IconData headerIcon(String category) {
+    switch (category) {
+      case 'nutrition':  return Icons.eco_outlined;
       case 'exercise':   return Icons.fitness_center;
-      case 'prevention': return Icons.health_and_safety;
-      case 'nutrition':
-      default:            return Icons.eco;
+      case 'prevention': return Icons.shield_outlined;
+      default:           return Icons.lightbulb_outline;
     }
   }
 }
