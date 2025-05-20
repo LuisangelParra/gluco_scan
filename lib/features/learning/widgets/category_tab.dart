@@ -1,39 +1,45 @@
 // lib/features/learning/widgets/category_tab.dart
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:gluco_scan/features/learning/controllers/learning_controller.dart';
-import 'package:gluco_scan/utils/constants/sizes.dart';
 
 class CategoryTab extends StatelessWidget {
   final String keyName;
   final String label;
+  final bool selected;
+  final Color selectedColor;
+  final VoidCallback onTap;
+
   const CategoryTab({
     super.key,
     required this.keyName,
     required this.label,
+    required this.selected,
+    required this.selectedColor,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.find<LearningController>();
-    return Obx(() {
-      final isSelected = ctrl.category.value == keyName;
-      return Expanded(
-        child: InkWell(
-          onTap: () => ctrl.category.value = keyName,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: LSizes.sm),
-            decoration: BoxDecoration(
-              color: ctrl.headerBgColor.withValues(alpha: isSelected ? 1 : 0.2),
-              borderRadius: BorderRadius.circular(LSizes.borderRadiusMd),
-            ),
-            alignment: Alignment.center,
-            child: Text(label,
-                style: const TextStyle(color: Colors.white, fontSize: 13)),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding:
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        decoration: BoxDecoration(
+          color: selected ? selectedColor : Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: selected ? selectedColor : Colors.grey.shade300,
           ),
         ),
-      );
-    });
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected ? Colors.white : Colors.black87,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
   }
 }

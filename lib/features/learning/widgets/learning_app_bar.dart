@@ -1,34 +1,33 @@
 // lib/features/learning/widgets/learning_app_bar.dart
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:gluco_scan/features/learning/controllers/learning_controller.dart';
 
 class LearningAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const LearningAppBar({super.key});
+  final String title;
+  final Color backgroundColor;
+  final IconData icon;
+
+  const LearningAppBar({
+    super.key,
+    required this.title,
+    required this.backgroundColor,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.find<LearningController>();
-    return Obx(() {
-      return AppBar(
-        backgroundColor: ctrl.headerBgColor,
-        elevation: 0,
-        title: const Text(
-          'Aprende sobre la diabetes',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-        ),
-        actions: [
-          Icon(ctrl.headerIcon, color: Colors.white),
-          const SizedBox(width: 16),
-        ],
-      );
-    });
+    return AppBar(
+      backgroundColor: backgroundColor,
+      title: Text(title, style: const TextStyle(color: Colors.white)),
+      actions: [ Icon(icon, color: Colors.white) ],
+      elevation: 0,
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(4),
+        child: Container(height: 4, color: Colors.white24),
+      ),
+    );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 20);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 4);
 }
