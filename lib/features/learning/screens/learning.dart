@@ -1,7 +1,6 @@
 // lib/features/learning/screens/learning_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gluco_scan/routes/routes.dart';
 import '../../../utils/constants/sizes.dart';
 import '../controllers/learning_controller.dart';
 import '../widgets/learning_app_bar.dart';
