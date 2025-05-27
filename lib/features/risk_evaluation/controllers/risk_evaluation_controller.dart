@@ -7,38 +7,37 @@ import 'package:gluco_scan/features/habit_tracking/controllers/habit_tracking_co
 import 'package:gluco_scan/routes/routes.dart';
 
 class RiskEvaluationController extends GetxController {
-  // Formulario
+  /// Clave del formulario
   final formKey = GlobalKey<FormState>();
 
-  // -- Demográficos
-  final ageCategory = 1.obs; // 1–13
-  final income      = 1.obs; // 1–8
+  // --- Demográficos (nuevos rangos según FastAPI) ---
+  final ageGroup   = 1.obs; // 1–13
+  final education  = 1.obs; // 1–6
+  final income     = 1.obs; // 1–11
 
-  // -- Peso / Altura
+  // --- Peso / Altura ---
   final weightCtrl = TextEditingController();
   final heightCtrl = TextEditingController();
 
-  // -- Estado de salud
+  // --- Salud general y días malos ---
   final genHealth      = 1.obs; // 1–5
-  final mentHealthCtrl = TextEditingController();
-  final physHealthCtrl = TextEditingController();
+  final mentHealthCtrl = TextEditingController(); // 0–30
+  final physHealthCtrl = TextEditingController(); // 0–30
 
-  // -- Antecedentes médicos (binarios 0=no,1=sí)
-  final highBP     = 0.obs; // HighBP
-  final highChol   = 0.obs; // HighChol
-  final cholCheck  = 0.obs; // CholCheck
-  final smoker     = 0.obs; // Smoker
-  final stroke     = 0.obs; // Stroke
-  final diffWalk   = 0.obs; // DiffWalk
-  final familyHist = 0.obs; // HeartDiseaseorAttack
+  // --- Antecedentes binarios ---
+  final highBP        = 0.obs; // 0/1
+  final highChol      = 0.obs; // 0/1
+  final smoker        = 0.obs; // 0/1
+  final stroke        = 0.obs; // 0/1
+  final diffWalk      = 0.obs; // 0/1
+  final familyHist    = 0.obs; // HeartDiseaseorAttack 0/1
+  final hvyAlcohol    = 0.obs; // HvyAlcoholConsump 0/1
 
-  // -- Bebedor empedernido
-  final hvyAlcohol = 0.obs; // HvyAlcoholConsump
+  // --- Actividad física en últimos 30 días (binario) ---
+  //final exerciseCtrl  = TextEditingController(); // '' o '1'
+  final physActivity = 0.obs;
 
-  // -- Actividad física
-  final exerciseCtrl = TextEditingController(); // capturamos un valor pero lo convertimos luego a 0/1
-
-  // UI state
+  // --- UI state ---
   final isEditable = true.obs;
   final isLoading  = false.obs;
 
@@ -50,52 +49,53 @@ class RiskEvaluationController extends GetxController {
     heightCtrl.dispose();
     mentHealthCtrl.dispose();
     physHealthCtrl.dispose();
-    exerciseCtrl.dispose();
     super.onClose();
   }
 
   Future<void> submit() async {
-    // 1) Validar formulario
+    // 1) Validar el form
     if (!formKey.currentState!.validate()) return;
 
     isEditable.value = false;
     isLoading.value  = true;
 
-    // 2) Construir payload acorde a la spec de tu API
+    // 2) Armar payload según tu FastAPI
     final payload = {
-      "GenHlth"              : genHealth.value,
-      "MentHlth"             : int.parse(mentHealthCtrl.text.trim()),
-      "HighBP"               : highBP.value,
-      "DiffWalk"             : diffWalk.value,
-      "weight"               : double.parse(weightCtrl.text.trim()),
-      "height"               : double.parse(heightCtrl.text.trim()),
-      "HighChol"             : highChol.value,
-      "Age"                  : ageCategory.value,
-      "HeartDiseaseorAttack" : familyHist.value,
-      "PhysHlth"             : int.parse(physHealthCtrl.text.trim()),
-      "Stroke"               : stroke.value,
-      // ACTIVIDAD FÍSICA: binario 0/1
-      "PhysActivity"         : (exerciseCtrl.text.trim().isNotEmpty ? 1 : 0),
-      "HvyAlcoholConsump"    : hvyAlcohol.value,
-      "CholCheck"            : cholCheck.value,
-      "Income"               : income.value,
-      "Smoker"               : smoker.value,
+      "GenHlth"             : genHealth.value,
+      "MentHlth"            : int.parse(mentHealthCtrl.text.trim()),
+      "HighBP"              : highBP.value,
+      "HighChol"            : highChol.value,
+      "Smoker"              : smoker.value,
+      "Stroke"              : stroke.value,
+      "HeartDiseaseorAttack": familyHist.value,
+      "PhysActivity"        : physActivity.value, 
+      "HvyAlcoholConsump"   : hvyAlcohol.value,
+      "DiffWalk"            : diffWalk.value,
+      "PhysHlth"            : int.parse(physHealthCtrl.text.trim()),
+      "AgeGroup"            : ageGroup.value,
+      "Education"           : education.value,
+      "Income"              : income.value,
+      "weight"              : double.parse(weightCtrl.text.trim()),
+      "height"              : double.parse(heightCtrl.text.trim()),
     };
 
     try {
+      // 3) Llamada a la API
       final result = await _repo.predict(payload);
       final riesgo = result['riesgo_diabetes'] as String;
 
-      // **1) Asegúrate de tener el controller instanciado**
+      // 4) Instanciar/recuperar controller de hábitos y asignar plantillas
       Get.put(HabitTrackingController());
+      await HabitTrackingController.instance
+          .assignHabitsForRisk(riesgo);
 
-      // **2) Asignar hábitos según riesgo**
-      await HabitTrackingController.instance.assignHabitsForRisk(riesgo);
-
-      // 3) Navegar a Result
-      Get.toNamed(LRoutes.riskResult, arguments: result);
+      // 5) Navegar a pantalla de resultado
+      Get.toNamed(
+        LRoutes.riskResult,
+        arguments: result,
+      );
     } catch (e) {
-      Get.snackbar("Error", "No se pudo obtener resultado: $e");
+      Get.snackbar('Error', 'No se pudo obtener resultado: $e');
     } finally {
       isLoading.value = false;
     }
